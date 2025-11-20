@@ -1,9 +1,10 @@
 import Image from "next/image";
+import Nav1 from "./Components/Nav1";
+
 export default function Home() {
   return (
-    <div className="text-5xl font-bold bg-white text-black m-2 p-2">
-      <Image src="/logo.png" width={100} height={100} alt="logo"/>
-      <div>Turant</div>
+    <div className="">
+      <Nav1></Nav1>      
       
     </div>
   );
