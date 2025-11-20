@@ -12,7 +12,7 @@ const Nav1 = () => {
       </ul>
       <div className='flex gap-5'>
         <Image src="/abc.png" width={33} height={33} alt='abc' />
-        <button className='text-white bg-[#007D37] font-bold px-8 py-2 m-1 rounded-full text-2xl shadow-[0px_6px_0px_rgba(0,0,0,0.2)] active:shadow-none active:translate-y-[6px] transition-all'>
+        <button className='text-white bg-[#007D37] font-bold px-8 py-2 m-1 rounded-full text-2xl shadow-[0px_6px_0px_rgba(0,0,0,0.2)] active:shadow-none active:translate-y-[6px] transition-all cursor-pointer'>
   Join
 </button>
       </div>
