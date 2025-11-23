@@ -38,7 +38,7 @@ export default function Home() {
               Affordable rates
             </div>
           </div>
-          <Image src="/car1.gif" height={292} width={535} alt="car"></Image>
+          <Image src="/car1.gif" height={600} width={600} alt="car"></Image>
         </div>
         <div className="bg-[#8E44AD] p-4 flex justify-between w-9/10 rounded-4xl">
           <div>
