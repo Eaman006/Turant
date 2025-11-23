@@ -38,7 +38,7 @@ export default function Home() {
               Affordable rates
             </div>
           </div>
-          <Image src="/car1.gif" height={600} width={600} alt="car"></Image>
+          <Image src="/car.gif" height={600} width={600} alt="car"></Image>
         </div>
         <div className="bg-[#8E44AD] p-4 flex justify-between w-9/10 rounded-4xl">
           <div>
@@ -50,7 +50,7 @@ export default function Home() {
               and chat with landlords directly
             </div>
           </div>
-          <Image src="/car1.png" height={292} width={535} alt="car"></Image>
+          <Image src="/PG.gif" height={800} width={900} alt="car"></Image>
         </div>
         <div className="bg-[#E67E22] p-4 flex justify-between w-9/10 rounded-4xl">
           <div>
@@ -62,7 +62,7 @@ export default function Home() {
               local dhabas and messes
             </div>
           </div>
-          <Image src="/car1.png" height={292} width={535} alt="car"></Image>
+          <Image src="/restaurant.gif" height={400} width={400} alt="car"></Image>
         </div>
         <div className="bg-[#2ECC71] p-4 flex justify-between w-9/10 rounded-4xl">
           <div>
@@ -86,7 +86,7 @@ export default function Home() {
               Fast home delivery.
             </div>
           </div>
-          <Image src="/car1.png" height={292} width={535} alt="car"></Image>
+          <Image src="/Pharmacy.gif" height={292} width={535} alt="car"></Image>
         </div>
       </div>
 
