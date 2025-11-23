@@ -28,35 +28,35 @@ export default function Home() {
 
       </div>
       <div>
-        <div>
+        <div className="bg-[#3269C3]">
           City Travel & Cabs
           <div>
             Shared cabs and autos
             Affordable rates
           </div>
         </div>
-        <div>
+        <div className="bg-[#8E44AD]">
           PG & Hotels
           <div>
             Compare rents, see room photos,
             and chat with landlords directly
           </div>
         </div>
-        <div>
+        <div className="bg-[#E67E22]">
           Restaurant
           <div>
             Browse daily menus from
             local dhabas and messes
           </div>
         </div>
-        <div>
+        <div className="bg-[#2ECC71]">
           Grocery (Kirana)
           <div>
             Connect with nearby shops
             Send your list to check availability
           </div>
         </div>
-        <div>
+        <div className="bg-[#009688]">
           Medical & Pharmacy
           <div>
             Upload prescription
