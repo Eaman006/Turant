@@ -74,7 +74,7 @@ export default function Home() {
               Send your list to check availability
             </div>
           </div>
-          <Image src="/car1.png" height={292} width={535} alt="car"></Image>
+          <Image src="/kirana.gif" height={292} width={535} alt="car"></Image>
         </div>
         <div className="bg-[#009688] p-4 flex justify-between w-9/10 rounded-4xl">
           <div>
