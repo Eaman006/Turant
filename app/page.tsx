@@ -3,7 +3,7 @@ import Nav1 from "./Components/Nav1";
 
 export default function Home() {
   return (
-    <div>
+    <div className="text-black">
       <div className="relative w-full h-screen overflow-hidden">
         <video
           src="https://ik.imagekit.io/builswb4k/public/back.mp4?updatedAt=1763988009929"

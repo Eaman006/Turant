@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 :root {
+  /* Define your default Light Mode colors here */
   --background: #ffffff;
   --foreground: #171717;
 }
@@ -12,15 +13,11 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ffffff;
-  }
-}
+/* I removed the @media (prefers-color-scheme: dark) block entirely */
 
 body {
-  background: var(--foreground);
-  color: var(--background);
+  /* Fix: Use --background for background, and --foreground for text color */
+  background: var(--background);
+  color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
