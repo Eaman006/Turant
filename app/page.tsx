@@ -6,7 +6,7 @@ export default function Home() {
     <div>
       <div className="relative w-full h-screen overflow-hidden">
         <video
-          src="/back.mp4"
+          src="https://ik.imagekit.io/builswb4k/public/back.mp4?updatedAt=1763988009929"
           autoPlay
           loop
           muted
@@ -38,7 +38,7 @@ export default function Home() {
               Affordable rates
             </div>
           </div>
-          <Image src="/car.gif" height={600} width={600} alt="car"></Image>
+          <Image src="https://ik.imagekit.io/builswb4k/public/car.gif?updatedAt=1763987936501" height={600} width={600} alt="car"></Image>
         </div>
         <div className="bg-[#8E44AD] p-4 flex justify-between w-9/10 rounded-4xl">
           <div>
@@ -50,7 +50,7 @@ export default function Home() {
               and chat with landlords directly
             </div>
           </div>
-          <Image src="/PG.gif" height={800} width={900} alt="car"></Image>
+          <Image src="https://ik.imagekit.io/builswb4k/public/PG.gif?updatedAt=1763987944500" height={800} width={900} alt="car"></Image>
         </div>
         <div className="bg-[#E67E22] p-4 flex justify-between w-9/10 rounded-4xl">
           <div>
@@ -62,7 +62,7 @@ export default function Home() {
               local dhabas and messes
             </div>
           </div>
-          <Image src="/restaurant.gif" height={400} width={400} alt="car"></Image>
+          <Image src="https://ik.imagekit.io/builswb4k/public/restaurant.gif?updatedAt=1763987945941" height={400} width={400} alt="car"></Image>
         </div>
         <div className="bg-[#2ECC71] p-4 flex justify-between w-9/10 rounded-4xl">
           <div>
@@ -74,7 +74,7 @@ export default function Home() {
               Send your list to check availability
             </div>
           </div>
-          <Image src="/kirana.gif" height={292} width={535} alt="car"></Image>
+          <Image src="https://ik.imagekit.io/builswb4k/public/kirana.gif?updatedAt=1763987951815" height={292} width={535} alt="car"></Image>
         </div>
         <div className="bg-[#009688] p-4 flex justify-between w-9/10 rounded-4xl">
           <div>
@@ -86,7 +86,7 @@ export default function Home() {
               Fast home delivery.
             </div>
           </div>
-          <Image src="/Pharmacy.gif" height={292} width={535} alt="car"></Image>
+          <Image src="https://ik.imagekit.io/builswb4k/public/Pharmacy.gif?updatedAt=1763987941838" height={292} width={400} alt="car"></Image>
         </div>
       </div>
 
