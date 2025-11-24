@@ -92,7 +92,7 @@ export default function Home() {
       <div className="text-[#E67E22]">
         ABOUT US
       </div>
-      <div>
+      <div className="text-[#3E2723]">
         We Walked the Streets so You Don't Have To
       </div>
       <div className="text-[#5D4037]">
