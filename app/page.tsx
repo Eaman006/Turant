@@ -89,8 +89,27 @@ export default function Home() {
           <Image src="https://ik.imagekit.io/builswb4k/public/Pharmacy.gif?updatedAt=1763987941838" height={292} width={400} alt="car"></Image>
         </div>
       </div>
+      <div className="text-[#5D4037]">
+        ABOUT US
+      </div>
+      <div>
+        We Walked the Streets so You Don't Have To
+      </div>
+      <div>
+        We realized that finding accurate details for local service, from the nearest fruit seller to medical store can be frustrating. Online maps often miss smaller shops and phone numbers rarely work.
+
+      </div>
+      <div>
+        We decided to change that.
+        Turant is a simple, community-first directory where every listing is manually verified by our team. We walk the streets, check the shops, and update the data regularly so you don’t have to guess.
+      </div>
+      <div className="bg-[#3E2723] text-[#FFF3E0]">
+        Get in Touch
+
+      </div>
 
 
     </div>
   );
 }
+
