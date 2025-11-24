@@ -89,23 +89,28 @@ export default function Home() {
           <Image src="https://ik.imagekit.io/builswb4k/public/Pharmacy.gif?updatedAt=1763987941838" height={292} width={400} alt="car"></Image>
         </div>
       </div>
-      <div className="text-[#E67E22]">
-        ABOUT US
-      </div>
-      <div className="text-[#3E2723]">
-        We Walked the Streets so You Don't Have To
-      </div>
-      <div className="text-[#5D4037]">
-        We realized that finding accurate details for local service, from the nearest fruit seller to medical store can be frustrating. Online maps often miss smaller shops and phone numbers rarely work.
+      <div className="p-10 bg-[#FFF3E0]">
+        <div className="text-[#E67E22] text-3xl font-bold m-2 font-[family-name:var(--font-poppins)] w-fit">
+          ABOUT US
+          <div className="bg-[#E67E22] w-1/2 h-1"></div>
+        </div>
+        <div className="text-[#3E2723] w-2/3 text-7xl m-4 p-2 font-[family-name:var(--font-poppins)] font-semibold">
+          We Walked the Streets so You Don't Have To
+        </div>
+        <div className="text-[#5D4037] font-[family-name:var(--font-noto-sans)] text-3xl w-2/3 m-4 p-2 font-thin">
+          We realized that finding accurate details for local service, from the nearest fruit seller to medical store can be frustrating. Online maps often miss smaller shops and phone numbers rarely work.
 
-      </div>
-      <div className="text-[#5D4037]">
-        We decided to change that.
-        Turant is a simple, community-first directory where every listing is manually verified by our team. We walk the streets, check the shops, and update the data regularly so you don’t have to guess.
-      </div>
-      <div className="bg-[#3E2723] text-[#FFF3E0]">
-        Get in Touch
+        </div>
+        <div className="text-[#5D4037] font-[family-name:var(--font-noto-sans)] text-3xl w-2/3 m-4 p-2 font-thin">
+          We decided to change that.
+          </div>
+          <div className="text-[#5D4037] font-[family-name:var(--font-noto-sans)] text-3xl w-2/3 m-4 p-2 font-thin" >
+          Turant is a simple, community-first directory where every listing is manually verified by our team. We walk the streets, check the shops, and update the data regularly so you don’t have to guess.
+        </div>
+        <button className="bg-[#3E2723] text-[#FFF3E0] m-6 w-2/9  py-3 font-bold text-4xl rounded-full font-[family-name:var(--font-poppins)] cursor-pointer">
+          Get in Touch
 
+        </button>
       </div>
 
 
