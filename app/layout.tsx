@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import 'react-phone-input-2/lib/style.css';
 import { Poppins } from 'next/font/google';
 import { Noto_Sans } from 'next/font/google';
 
