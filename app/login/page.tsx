@@ -4,12 +4,12 @@ import React from 'react'
 import Image from 'next/image'
 import PhoneInput from 'react-phone-input-2'
 
-const Page = () => {
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [error, setError] = useState('');
-  const [step, setStep] = useState(1);
-  const [otp, setOtp] = useState(['', '', '', '']);
-  const [timer, setTimer] = useState(60);
+const Page: React.FC = () => {
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
+  const [error, setError] = useState<string>('');
+  const [step, setStep] = useState<number>(1);
+  const [otp, setOtp] = useState<string[]>(['', '', '', '']);
+  const [timer, setTimer] = useState<number>(60);
 
   useEffect(() => {
     let interval: ReturnType<typeof setInterval> | undefined;
@@ -21,7 +21,7 @@ const Page = () => {
     };
   }, [step, timer]);
 
-  const handleGetOtp = (e) => {
+  const handleGetOtp = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const digitsOnly = phoneNumber.replace(/\D/g, "");
     // India code (91) + 10 digits = 12
@@ -33,8 +33,8 @@ const Page = () => {
     }
   };
 
-  const handleOtpChange = (value, index) => {
-    if (isNaN(value)) return;
+  const handleOtpChange = (value: string, index: number) => {
+    if (!/^\d?$/.test(value)) return;
     const newOtp = [...otp];
     newOtp[index] = value.substring(value.length - 1);
     setOtp(newOtp);
@@ -64,7 +64,7 @@ const Page = () => {
       <div className="bg-white w-full lg:w-1/2 h-full flex items-center justify-center p-6">
 
         {step === 1 ? (
-          <form className='flex flex-col gap-6 w-full max-w-md'>
+          <form className='flex flex-col gap-6 w-full max-w-md' onSubmit={handleGetOtp}>
             <div className='text-[#3E2723] text-6xl font-bold font-[family-name:var(--font-poppins)]'>
               Namaste!
             </div>
@@ -111,7 +111,6 @@ const Page = () => {
             <div className='flex justify-center'>
               <button
                 type="submit"
-                onClick={handleGetOtp}
                 className="w-1/2 py-3 bg-[#E67E22] text-white text-lg font-bold rounded-lg hover:bg-[#d6711c] transition-all shadow-md cursor-pointer"
               >
                 GET OTP
@@ -146,7 +145,7 @@ const Page = () => {
                   key={index}
                   id={`otp-${index}`}
                   type="text"
-                  maxLength="1"
+                  maxLength={1}
                   className="w-14 h-14 border border-gray-300 rounded-lg text-center text-xl font-bold focus:border-[#E67E22] outline-none"
                   value={data}
                   onChange={(e) => handleOtpChange(e.target.value, index)}
