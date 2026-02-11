@@ -12,11 +12,13 @@ const Page = () => {
   const [timer, setTimer] = useState(60);
 
   useEffect(() => {
-    let interval;
+    let interval: ReturnType<typeof setInterval> | undefined;
     if (step === 2 && timer > 0) {
       interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
     }
-    return () => clearInterval(interval);
+    return () => {
+      if (interval) clearInterval(interval);
+    };
   }, [step, timer]);
 
   const handleGetOtp = (e) => {
