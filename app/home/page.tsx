@@ -4,12 +4,14 @@ import Sidebar from '../Components/Sidebar'
 
 const page = () => {
   return (
-    <div>
-      <div className='flex'>
-        <Sidebar/>
-        <div className='flex'>
-          <Image src={"/sh.png"} height={20} width={20} alt='s'></Image>
-          <input type="text" placeholder='search for fruit or cabs' />
+    <div className=''>
+      <div className='m-0'>
+        <Sidebar />
+        <div className='ml-28 mr-10 pt-10'>
+          <div className='shadow-gray-300 shadow-md flex p-4 rounded-xl gap-5 border-gray-300 border-2'>
+            <Image src={"/sh.png"} height={20} width={20} alt='s'></Image>
+            <input type="text" placeholder='search for fruit or cabs' />
+          </div>
         </div>
       </div>
 
