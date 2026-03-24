@@ -2,6 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 import Sidebar from '../Components/Sidebar'
 import AuthGuard from '../Components/AuthGuard'
+import Link from 'next/link'
 
 const page = () => {
   return (
@@ -26,26 +27,35 @@ const page = () => {
           </div>
           <div className='text-[#3E2723] my-2 py-2 text-3xl font-extrabold '>Who do you want to call?</div>
           <div className='flex gap-10 justify-center'>
+            <Link href="/home/cab">
             <div className='bg-[#2962FF] rounded-2xl cursor-pointer'>
               <div className='m-2 p-4 h-40'><Image src={"/car.png"} height={118} width={150} alt='car'></Image></div>
               <div className='text-center text-white font-bold text-xl'>Cabs</div>
             </div>
+            </Link>
+            <Link href="/home/pg">
             <div className='bg-[#8E44AD] rounded-2xl p-2'>
               <div className='m-2 p-4 h-40'><Image src={"/ho.png"} height={139} width={176} alt='ho'></Image></div>
               <div className='text-center text-white font-bold text-xl'>PG & Hotels</div>
             </div>
-            <div className='bg-[#E67E22] rounded-2xl cursor-pointer'>
+            </Link>
+            <Link href="/home/restaurant"><div className='bg-[#E67E22] rounded-2xl cursor-pointer'>
               <div className='m-2 p-4 h-40'><Image src={"/ph.png"} width={157} height={132} alt='ph'></Image></div>
               <div className='text-center text-white font-bold text-xl'>Restaurant</div>
             </div>
+            </Link>
+            <Link href="/home/grocery">
             <div className='bg-[#2ECC71] rounded-2xl cursor-pointer'>
               <div className='m-2 p-4 h-40'><Image src={"/gh.png"} width={160} height={132} alt='gh'></Image></div>
               <div className='text-center text-white font-bold text-xl'>Grocery</div>
             </div>
+            </Link>
+            <Link href="/home/medical">
             <div className='bg-[#009688] rounded-2xl cursor-pointer'>
               <div className='m-2 p-4 h-40'><Image src={"/med.png"} width={157} height={134} alt='med'></Image></div>
               <div className='text-center text-white font-bold text-xl'>Medical</div>
             </div>
+            </Link>
           </div>
         </div>
 
