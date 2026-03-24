@@ -1,9 +1,11 @@
 import React from 'react'
 import Image from 'next/image'
 import Sidebar from '../Components/Sidebar'
+import AuthGuard from '../Components/AuthGuard'
 
 const page = () => {
   return (
+    <AuthGuard>
     <div className='font-[family-name:var(--font-poppins)]'>
       <div className=''>
         <Sidebar />
@@ -51,6 +53,7 @@ const page = () => {
 
 
     </div>
+    </AuthGuard>
   )
 }
 
