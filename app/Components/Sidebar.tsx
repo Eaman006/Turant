@@ -21,13 +21,16 @@ const Sidebar = () => {
         isOpen ? 'w-64' : 'w-[85px]'
       }`}
     >
-        {/* Logo Section - Added onClick and cursor-pointer */}
+        {/* Logo Section - Restructured to prevent shifting */}
         <div 
-          className='m-2 p-2 h-32 flex items-center cursor-pointer' 
+          className='h-32 flex gap-5 items-center cursor-pointer px-4 w-full' 
           onClick={() => setIsOpen(!isOpen)}
         >
-            <div className='min-w-[40px] flex justify-center ml-2'>
+            <div className='min-w-[40px] flex justify-center'>
               <Image src={"/hl.png"} height={38} width={40} alt='l' />
+            </div>
+            <div className={`text-3xl font-bold text-blue-700 whitespace-nowrap transition-all duration-300 ${isOpen ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}`}>
+              Turant
             </div>
         </div>
 
