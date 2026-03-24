@@ -8,7 +8,13 @@ import { useRouter } from 'next/navigation'
 
 // Firebase imports
 import { auth } from '../lib/firebase' // Adjust this path if your firebase.js is elsewhere
-import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from 'firebase/auth'
+import {
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+  ConfirmationResult,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from 'firebase/auth'
 
 const Page: React.FC = () => {
   const [phoneNumber, setPhoneNumber] = useState<string>('');
@@ -130,6 +136,28 @@ const Page: React.FC = () => {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    setLoading(true);
+    setError("");
+    setSuccess("");
+
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+
+      console.log("Successfully logged in with Google!", result.user);
+      setSuccess("Logged in successfully! Redirecting to home...");
+      setTimeout(() => {
+        router.push('/home');
+      }, 500);
+    } catch (err: any) {
+      console.error("Error during Google login:", err);
+      setError(err?.message || "Google login failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className='flex h-screen w-full bg-[#FFF3E0] overflow-hidden'>
       {/* Invisible reCAPTCHA container required by Firebase */}
@@ -215,6 +243,8 @@ const Page: React.FC = () => {
             <button
               type="button"
               className='text-[#333333] text-base font-medium flex items-center justify-center gap-3 border py-2.5 border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer'
+              onClick={handleGoogleLogin}
+              disabled={loading}
             >
               <Image src="/Search.png" height={20} width={20} alt='G' />
               Login with Google
