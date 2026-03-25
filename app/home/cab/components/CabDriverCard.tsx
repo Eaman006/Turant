@@ -55,9 +55,6 @@ export default function CabDriverCard({ driver }: { driver: CabDriver }) {
       </div>
 
       <div className="flex flex-col items-end gap-2">
-        <div className="text-xs font-semibold text-[#0049DB] bg-[#EDE1CF99] px-3 py-1 rounded-full">
-          Verified driver
-        </div>
         {callHref ? (
           <a
             href={callHref}
