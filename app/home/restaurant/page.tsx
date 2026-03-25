@@ -74,10 +74,10 @@ const page = () => {
             </div>
             <div className='flex gap-5 m-2 p-2'>
               <div className='bg-[#0049DB] px-8 py-2 rounded-full text-white font-semibold'>All</div>
-              <div className='px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]'>Kirana Stores</div>
-              <div className='px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]'>Fresh Veggies</div>
-              <div className='px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]'>Water Suppliers</div>
-              <div className='px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]'>Stationery</div>
+              <div className='px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]'>Family Restaurant</div>
+              <div className='px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]'>Restaurant</div>
+              <div className='px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]'>Chinese Food</div>
+              <div className='px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]'>Cafe</div>
             </div>
           </div>
   )
