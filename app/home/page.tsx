@@ -12,20 +12,31 @@ const page = () => {
             <input className='w-full h-5 outline-none' type="text" placeholder='search for fruit or cabs' />
 
           </div>
-          <div className='bg-gradient-to-r from-[#E67E22]/50 to-[#F39C12]/50 mt-10 flex justify-center items-center rounded-2xl'>
-            <div className='font-extrabold text-5xl text-white mt-6 p-6 mx-10 '>
-              No Middlemen. No Commissions. Just Direct Contacts.
-              <div className='font-light text-lg my-2 py-2'>Connect directly with local drivers and shopkeepers. Fair prices for everyone.</div>
+          <div className='bg-gradient-to-r from-[#E67E22]/50 to-[#F39C12]/50 mt-10 flex justify-between items-center rounded-2xl'>
+            <div className='font-extrabold text-4xl sm:text-4xl text-white p-6 mx-10 flex flex-col'>
+              <span className='block leading-[1.05]'>No Middlemen.No Commissions.</span>
+              <span className='block mt-2 leading-[1.05]'>Just Direct Contacts.</span>
+              <div className='font-light text-lg mt-4'>
+                Connect directly with local drivers and shopkeepers. Fair prices for everyone.
+              </div>
             </div>
-            <div className='m-4 p-4'>
+            <div className='p-4 pb-0'>
               <Image className='object-fill' src={"/cc.png"} height={255} width={438} alt='cc'></Image>
             </div>
           </div>
           <div className='text-[#3E2723] my-2 py-2 text-3xl font-extrabold '>Who do you want to call?</div>
-          <div className='flex gap-10 justify-center'>
+          <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 justify-items-stretch'>
             <Link href="/home/cab">
             <div className='bg-[#2962FF] rounded-2xl cursor-pointer'>
-              <div className='m-2 p-4 h-40'><Image src={"/car.png"} height={118} width={150} alt='car'></Image></div>
+              <div className='m-2 p-4 h-40 flex items-center justify-center'>
+                <Image
+                  src={"/car.png"}
+                  height={118}
+                  width={150}
+                  alt='car'
+                  className='w-full h-full object-contain'
+                ></Image>
+              </div>
               <div className='text-center text-white font-bold text-xl'>Cabs</div>
             </div>
             </Link>
@@ -44,19 +55,43 @@ const page = () => {
             </div>
             </Link>
             <Link href="/home/restaurant"><div className='bg-[#E67E22] rounded-2xl cursor-pointer'>
-              <div className='m-2 p-4 h-40'><Image src={"/ph.png"} width={157} height={132} alt='ph'></Image></div>
+              <div className='m-2 p-4 h-40 flex items-center justify-center'>
+                <Image
+                  src={"/ph.png"}
+                  width={157}
+                  height={132}
+                  alt='ph'
+                  className='w-full h-full object-contain'
+                ></Image>
+              </div>
               <div className='text-center text-white font-bold text-xl'>Restaurant</div>
             </div>
             </Link>
             <Link href="/home/grocery">
             <div className='bg-[#2ECC71] rounded-2xl cursor-pointer'>
-              <div className='m-2 p-4 h-40'><Image src={"/gh.png"} width={160} height={132} alt='gh'></Image></div>
+              <div className='m-2 p-4 h-40 flex items-center justify-center'>
+                <Image
+                  src={"/gh.png"}
+                  width={160}
+                  height={132}
+                  alt='gh'
+                  className='w-full h-full object-contain'
+                ></Image>
+              </div>
               <div className='text-center text-white font-bold text-xl'>Grocery</div>
             </div>
             </Link>
             <Link href="/home/medical">
             <div className='bg-[#009688] rounded-2xl cursor-pointer'>
-              <div className='m-2 p-4 h-40'><Image src={"/med.png"} width={157} height={134} alt='med'></Image></div>
+              <div className='m-2 p-4 h-40 flex items-center justify-center'>
+                <Image
+                  src={"/med.png"}
+                  width={157}
+                  height={134}
+                  alt='med'
+                  className='w-full h-full object-contain'
+                ></Image>
+              </div>
               <div className='text-center text-white font-bold text-xl'>Medical</div>
             </div>
             </Link>
