@@ -67,7 +67,7 @@ const CabPage = () => {
       </div>
       <div className='shadow-gray-300 shadow-md flex rounded-xl p-4 gap-5 border-gray-300 border-2 w-lg'>
         <Image src={"/sh.png"} height={20} width={20} alt='s'></Image>
-        <input className='w-full h-5 outline-none' type="text" placeholder='search for fruit or cabs' />
+        <input className='w-full h-5 outline-none' type="text" placeholder='search for cabs' />
       </div>
       <div className='flex justify-between gap-5'>
         <div className='m-2 p-2'><Image src="/bell.png" height={20} width={16} alt='b'></Image></div>
