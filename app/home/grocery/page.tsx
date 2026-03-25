@@ -4,9 +4,14 @@ import Image from 'next/image'
 import LocationHeader from '@/app/Components/LocationHeader'
 import { useEffect } from 'react'
 import { useState } from 'react'
+import SearchGrocery from './components/SearchGrocery'
+import GroceryList from './components/GroceryList'
 
 const page = () => {
   const [address, setAddress] = useState<string>("Detecting location...");
+  const [activeCategory, setActiveCategory] = useState<string>("All");
+  const [searchTerm, setSearchTerm] = useState<string>("");
+
   
     useEffect(() => {
       // 1. Check if the browser supports Geolocation
@@ -54,10 +59,7 @@ const page = () => {
             <div className=''>
           <LocationHeader locationName={address} />
           </div>
-          <div className='shadow-gray-300 shadow-md flex rounded-xl p-4 gap-5 border-gray-300 border-2 w-lg'>
-            <Image src={"/sh.png"} height={20} width={20} alt='s'></Image>
-            <input className='w-full h-5 outline-none' type="text" placeholder='search for fruit or cabs' />
-          </div>
+          <SearchGrocery onSearch={setSearchTerm} />
           <div className='flex justify-between gap-5'>
             <div className='m-2 p-2'><Image src="/bell.png" height={20} width={16} alt='b'></Image></div>
             <div className='m-2 p-2'><Image src="/set.png" width={20.1} height={20} alt='set'></Image></div>
@@ -73,11 +75,44 @@ const page = () => {
             FFound 18 verified shops near VIT Bhopal campus. Reliable stores with fast delivery.
           </div>
           <div className='flex gap-5 m-2 p-2'>
-            <div className='bg-[#0049DB] px-8 py-2 rounded-full text-white font-semibold'>All</div>
-            <div className='px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]'>Kirana Stores</div>
-            <div className='px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]'>Fresh Veggies</div>
-            <div className='px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]'>Water Suppliers</div>
-            <div className='px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]'>Stationery</div>
+            <button 
+              type="button" 
+              onClick={() => setActiveCategory("All")}
+              className={activeCategory === "All" ? "bg-[#0049DB] px-8 py-2 rounded-full text-white font-semibold" : "px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]"}
+            >
+              All
+            </button>
+            <button 
+              type="button" 
+              onClick={() => setActiveCategory("Kirana Stores")}
+              className={activeCategory === "Kirana Stores" ? "bg-[#0049DB] px-8 py-2 rounded-full text-white font-semibold" : "px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]"}
+            >
+              Kirana Stores
+            </button>
+            <button 
+              type="button" 
+              onClick={() => setActiveCategory("Fresh Veggies")}
+              className={activeCategory === "Fresh Veggies" ? "bg-[#0049DB] px-8 py-2 rounded-full text-white font-semibold" : "px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]"}
+            >
+              Fresh Veggies
+            </button>
+            <button 
+              type="button" 
+              onClick={() => setActiveCategory("Water Suppliers")}
+              className={activeCategory === "Water Suppliers" ? "bg-[#0049DB] px-8 py-2 rounded-full text-white font-semibold" : "px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]"}
+            >
+              Water Suppliers
+            </button>
+            <button 
+              type="button" 
+              onClick={() => setActiveCategory("Stationery")}
+              className={activeCategory === "Stationery" ? "bg-[#0049DB] px-8 py-2 rounded-full text-white font-semibold" : "px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]"}
+            >
+              Stationery
+            </button>
+          </div>
+          <div className='h-[32rem] overflow-y-scroll overflow-x-hidden p-2'>
+            <GroceryList activeCategory={activeCategory} searchTerm={searchTerm} />
           </div>
         </div>
   )
