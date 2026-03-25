@@ -164,8 +164,8 @@ const Page: React.FC = () => {
       <div id="recaptcha-container"></div>
 
       {/* LEFT SECTION */}
-      <div className="hidden lg:flex w-1/2 h-full relative bg-[url('/tt.png')] bg-cover bg-center items-center justify-center">
-        <div className="relative w-[80%] h-[80%]">
+      <div className="hidden lg:flex w-1/2 h-full relative bg-[url('/tt.png')] bg-cover bg-center items-end justify-start">
+        <div className="absolute bottom-0 left-0 w-[88%] h-[88%]">
           <Image
             src="/log.png"
             fill
