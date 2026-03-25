@@ -7,6 +7,7 @@ export type CabDriver = {
   phone_number: string | null;
   vehicle_type: string | null;
   id: string | null;
+  vehicle: string | null;
 };
 
 function getInitials(name: string | null) {
@@ -21,6 +22,7 @@ export default function CabDriverCard({ driver }: { driver: CabDriver }) {
   const driverName = driver.driver_name ?? "Unknown driver";
   const vehicleType = driver.vehicle_type ?? "—";
   const phone = driver.phone_number ?? "";
+  const vehicle = driver.vehicle ?? "-";
   const initials = getInitials(driver.driver_name);
 
   const callHref = phone ? `tel:${phone}` : undefined;
@@ -37,7 +39,10 @@ export default function CabDriverCard({ driver }: { driver: CabDriver }) {
             {driverName}
           </div>
           <div className="text-sm text-gray-600 mt-1">
-            {vehicleType}
+            Service: {vehicleType}
+          </div>
+          <div className="text-sm text-gray-600 mt-1">
+            {vehicle}
           </div>
           {phone ? (
             <div className="text-sm text-gray-600 mt-1 truncate">

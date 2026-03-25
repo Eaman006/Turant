@@ -33,7 +33,13 @@ export default function CabDriversList({
           .select("*");
 
         if (filterVehicleType) {
-          query = query.eq("vehicle_type", filterVehicleType);
+          if (filterVehicleType === "Shared Auto") {
+            query = query.ilike("vehicle_type", "%auto%");
+          } else if (filterVehicleType === "Private Cab") {
+            query = query.ilike("vehicle_type", "%cab%");
+          } else {
+            query = query.eq("vehicle_type", filterVehicleType);
+          }
         }
 
         const { data, error } = await query;

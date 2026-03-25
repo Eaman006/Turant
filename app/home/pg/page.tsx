@@ -76,6 +76,10 @@ const page = () => {
           <div className='px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]'>Boys PG</div>
           <div className='px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]'>Girls PG</div>
           <div className='px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]'>Hotel</div>
+<<<<<<< HEAD
+=======
+          <div className='px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]'>Single Room</div>
+>>>>>>> 0e349c78ff5088e75cbb6c62bf942c1119fc7b69
         </div>
       </div>
   )
