@@ -48,7 +48,7 @@ const page = () => {
     );
   }, []); // The empty array ensures this only runs once when the page loads
   return (
-    <div>
+    <div className='font-[family-name:var(--font-poppins)]'>
       <div className='flex justify-between'>
         <div className=''>
       <LocationHeader locationName={address} />
@@ -56,18 +56,27 @@ const page = () => {
       <div className='shadow-gray-300 shadow-md flex rounded-xl p-4 gap-5 border-gray-300 border-2 w-lg'>
         <Image src={"/sh.png"} height={20} width={20} alt='s'></Image>
         <input className='w-full h-5 outline-none' type="text" placeholder='search for fruit or cabs' />
-
+      </div>
+      <div className='flex justify-between gap-5'>
+        <div className='m-2 p-2'><Image src="/bell.png" height={20} width={16} alt='b'></Image></div>
+        <div className='m-2 p-2'><Image src="/set.png" width={20.1} height={20} alt='set'></Image></div>
       </div>
       </div>
-      <div>
-        HOME &gt; CABS & AUTOS
+      <div className='text-sm my-5 font-semibold'>
+        HOME &gt; <span className='text-[#0049DB]'>CABS & AUTOS</span>
       </div>
-      <div>
+      <div className='text-[#201B10] text-5xl font-extrabold my-5'>
         Cabs & Autos in Kothri Kalan
       </div>
-      <div>
+      <div className='m-2 p-2'>
         Find reliable transportation options near your hostel. Verified drivers with
         <div>transparent routes.</div>
+      </div>
+      <div className='flex gap-5 m-2 p-2'>
+        <div className='bg-[#0049DB] px-8 py-2 rounded-full text-white font-semibold'>All</div>
+        <div className='px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]'>Shared Auto</div>
+        <div className='px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]'>Private Cab</div>
+        <div className='px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]'>E-Rickshaw</div>
       </div>
     </div>
   )
