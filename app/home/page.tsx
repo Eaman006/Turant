@@ -14,7 +14,7 @@ const page = () => {
           </div>
           <div className='bg-gradient-to-r from-[#E67E22]/50 to-[#F39C12]/50 mt-10 flex justify-center items-center rounded-2xl'>
             <div className='font-extrabold text-5xl text-white mt-6 p-6 mx-10 '>
-              No Middlemen. No Commissions. Just Direct Contact.
+              No Middlemen. No Commissions. Just Direct Contacts.
               <div className='font-light text-lg my-2 py-2'>Connect directly with local drivers and shopkeepers. Fair prices for everyone.</div>
             </div>
             <div className='m-4 p-4'>
