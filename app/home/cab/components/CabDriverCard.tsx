@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { auth } from "@/lib/firebase";
 
 export type CabDriver = {
   driver_name: string | null;
@@ -37,6 +38,14 @@ export default function CabDriverCard({ driver }: { driver: CabDriver }) {
 
   async function submitReport() {
     setReportResult(null);
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+      window.alert("Please log in first to report a driver.");
+      return;
+    }
+
+    const reporterId = currentUser.uid;
+    const reporterName = currentUser.displayName || currentUser.email || "Anonymous";
 
     setIsReporting(true);
     try {
@@ -44,12 +53,10 @@ export default function CabDriverCard({ driver }: { driver: CabDriver }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          driver_id: driver.id,
-          driver_name: driver.driver_name,
-          phone_number: driver.phone_number,
-          vehicle_type: driver.vehicle_type,
-          vehicle: driver.vehicle,
+          cab_id: driver.id,
           reason: reportReason,
+          reporter_id: reporterId,
+          reporter_name: reporterName,
         }),
       });
 
@@ -147,14 +154,14 @@ export default function CabDriverCard({ driver }: { driver: CabDriver }) {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <button
             type="button"
-            className="absolute inset-0 bg-black/40"
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             aria-label="Close report dialog"
             onClick={() => {
               if (isReporting) return;
               setIsReportOpen(false);
             }}
           />
-          <div className="relative w-full max-w-md rounded-2xl bg-white shadow-xl border border-gray-100 p-5">
+          <div className="relative w-full max-w-md rounded-3xl bg-white shadow-xl border border-gray-100 p-5 font-[family-name:var(--font-poppins)]">
             <div className="flex items-start justify-between gap-4">
               <div>
                 <div className="text-[#201B10] font-extrabold text-lg">
