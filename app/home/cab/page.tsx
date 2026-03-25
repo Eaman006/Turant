@@ -5,9 +5,11 @@ import LocationHeader from '@/app/Components/LocationHeader'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import CabDriversList from '@/app/home/cab/components/CabDriversList'
+import SearchCabs from '@/app/home/cab/components/SearchCabs'
 
 const CabPage = () => {
   const [address, setAddress] = useState<string>("Detecting location...");
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   type Category = "All" | "Shared Auto" | "Private Cab" | "E-Rickshaw";
   const [activeCategory, setActiveCategory] = useState<Category>("All");
@@ -62,13 +64,11 @@ const CabPage = () => {
   return (
     <div className='font-[family-name:var(--font-poppins)]'>
       <div className='flex justify-between'>
-        <div className=''>
+      <div className=''>
       <LocationHeader locationName={address} />
       </div>
-      <div className='shadow-gray-300 shadow-md flex rounded-xl p-4 gap-5 border-gray-300 border-2 w-lg'>
-        <Image src={"/sh.png"} height={20} width={20} alt='s'></Image>
-        <input className='w-full h-5 outline-none' type="text" placeholder='search for cabs' />
-      </div>
+      <SearchCabs onSearch={setSearchTerm} />
+
       <div className='flex justify-between gap-5'>
         <div className='m-2 p-2'><Image src="/bell.png" height={20} width={16} alt='b'></Image></div>
         <div className='m-2 p-2'><Image src="/set.png" width={20.1} height={20} alt='set'></Image></div>
@@ -115,7 +115,7 @@ const CabPage = () => {
         </button>
       </div>
       <div className='h-96 overflow-y-scroll overflow-x-hidden'>
-      <CabDriversList vehicleType={vehicleTypeByCategory[activeCategory]} />
+      <CabDriversList vehicleType={vehicleTypeByCategory[activeCategory]} searchTerm={searchTerm} />
       </div>
     </div>
   )
