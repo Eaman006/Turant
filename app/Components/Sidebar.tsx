@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { onAuthStateChanged, signOut, type User } from 'firebase/auth'
 import { auth } from '../lib/firebase'
+import Link from 'next/link'
 
 const Sidebar = () => {
   const pathname = usePathname();
@@ -70,7 +71,7 @@ const Sidebar = () => {
       {/* Navigation Items — labels removed from layout when collapsed so width never exceeds the rail */}
       <div className='flex-1 min-h-0 overflow-y-auto overflow-x-hidden my-2 py-2 flex flex-col gap-10'>
         {/* Home */}
-        <div className={`flex gap-5 items-center cursor-pointer px-4 py-2 w-full transition-colors ${getActiveClass("/home")}`}>
+        <Link href={"/home"}><div className={`flex gap-5 items-center cursor-pointer px-4 py-2 w-full transition-colors ${getActiveClass("/home")}`}>
           <div className='min-w-[40px] flex justify-center'>
             <Image src={"/h.png"} height={35} width={35} alt='h' />
           </div>
@@ -78,6 +79,7 @@ const Sidebar = () => {
             <div className={`text-lg whitespace-nowrap ${getActiveClass1("/home")}`}>Home</div>
           )}
         </div>
+        </Link>
 
         {/* Saved */}
         <div className={`flex gap-5 items-center cursor-pointer px-4 py-2 w-full transition-colors ${getActiveClass("/saved")}`}>

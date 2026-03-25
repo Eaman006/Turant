@@ -1,16 +1,12 @@
 import React from 'react'
 import Image from 'next/image'
-import Sidebar from '../Components/Sidebar'
-import AuthGuard from '../Components/AuthGuard'
 import Link from 'next/link'
 
 const page = () => {
   return (
-    <AuthGuard>
     <div className='font-[family-name:var(--font-poppins)]'>
       <div className=''>
-        <Sidebar />
-        <div className='ml-28 mr-10 pt-10'>
+        <div>
           <div className='shadow-gray-300 shadow-md flex rounded-xl p-4 gap-5 border-gray-300 border-2'>
             <Image src={"/sh.png"} height={20} width={20} alt='s'></Image>
             <input className='w-full h-5 outline-none' type="text" placeholder='search for fruit or cabs' />
@@ -63,7 +59,6 @@ const page = () => {
 
 
     </div>
-    </AuthGuard>
   )
 }
 
