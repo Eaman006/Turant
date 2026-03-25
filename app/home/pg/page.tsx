@@ -4,9 +4,13 @@ import Image from 'next/image'
 import LocationHeader from '@/app/Components/LocationHeader'
 import { useEffect } from 'react'
 import { useState } from 'react'
+import SearchPGs from './components/SearchPGs'
+import PGList from './components/PGList'
 
 const page = () => {
   const [address, setAddress] = useState<string>("Detecting location...");
+  const [activeCategory, setActiveCategory] = useState<string>("All");
+  const [searchTerm, setSearchTerm] = useState<string>("");
   
     useEffect(() => {
       // 1. Check if the browser supports Geolocation
@@ -50,14 +54,11 @@ const page = () => {
     return (
       <div className='font-[family-name:var(--font-poppins)]'>
         <div className='flex justify-between'>
-          <div className=''>
-        <LocationHeader locationName={address} />
-        </div>
-        <div className='shadow-gray-300 shadow-md flex rounded-xl p-4 gap-5 border-gray-300 border-2 w-lg'>
-          <Image src={"/sh.png"} height={20} width={20} alt='s'></Image>
-          <input className='w-full h-5 outline-none' type="text" placeholder='search for fruit or cabs' />
-        </div>
-        <div className='flex justify-between gap-5'>
+        <div className=''>
+      <LocationHeader locationName={address} />
+      </div>
+      <SearchPGs onSearch={setSearchTerm} />
+      <div className='flex justify-between gap-5'>
           <div className='m-2 p-2'><Image src="/bell.png" height={20} width={16} alt='b'></Image></div>
           <div className='m-2 p-2'><Image src="/set.png" width={20.1} height={20} alt='set'></Image></div>
         </div>
@@ -72,10 +73,37 @@ const page = () => {
           Found 42 verified listings near VIT Bhopal campus. Reliable stays with transparent amenities.
         </div>
         <div className='flex gap-5 m-2 p-2'>
-          <div className='bg-[#0049DB] px-8 py-2 rounded-full text-white font-semibold'>All</div>
-          <div className='px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]'>Boys PG</div>
-          <div className='px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]'>Girls PG</div>
-          <div className='px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]'>Hotel</div>
+          <button 
+            type="button" 
+            onClick={() => setActiveCategory("All")}
+            className={activeCategory === "All" ? "bg-[#0049DB] px-8 py-2 rounded-full text-white font-semibold" : "px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]"}
+          >
+            All
+          </button>
+          <button 
+            type="button" 
+            onClick={() => setActiveCategory("Boys PG")}
+            className={activeCategory === "Boys PG" ? "bg-[#0049DB] px-8 py-2 rounded-full text-white font-semibold" : "px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]"}
+          >
+            Boys PG
+          </button>
+          <button 
+            type="button" 
+            onClick={() => setActiveCategory("Girls PG")}
+            className={activeCategory === "Girls PG" ? "bg-[#0049DB] px-8 py-2 rounded-full text-white font-semibold" : "px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]"}
+          >
+            Girls PG
+          </button>
+          <button 
+            type="button" 
+            onClick={() => setActiveCategory("Hotel")}
+            className={activeCategory === "Hotel" ? "bg-[#0049DB] px-8 py-2 rounded-full text-white font-semibold" : "px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]"}
+          >
+            Hotel
+          </button>
+        </div>
+        <div className='h-[32rem] overflow-y-scroll overflow-x-hidden p-2'>
+          <PGList activeCategory={activeCategory} searchTerm={searchTerm} />
         </div>
       </div>
   )
