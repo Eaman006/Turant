@@ -4,9 +4,14 @@ import Image from 'next/image'
 import LocationHeader from '@/app/Components/LocationHeader'
 import { useEffect } from 'react'
 import { useState } from 'react'
+import SearchMedical from './components/SearchMedical'
+import MedicalList from './components/MedicalList'
 
 const page = () => {
   const [address, setAddress] = useState<string>("Detecting location...");
+  const [activeCategory, setActiveCategory] = useState<string>("All");
+  const [searchTerm, setSearchTerm] = useState<string>("");
+
   
     useEffect(() => {
       // 1. Check if the browser supports Geolocation
@@ -53,10 +58,7 @@ const page = () => {
           <div className=''>
         <LocationHeader locationName={address} />
         </div>
-        <div className='shadow-gray-300 shadow-md flex rounded-xl p-4 gap-5 border-gray-300 border-2 w-lg'>
-          <Image src={"/sh.png"} height={20} width={20} alt='s'></Image>
-          <input className='w-full h-5 outline-none' type="text" placeholder='search for fruit or cabs' />
-        </div>
+        <SearchMedical onSearch={setSearchTerm} />
         <div className='flex justify-between gap-5'>
           <div className='m-2 p-2'><Image src="/bell.png" height={20} width={16} alt='b'></Image></div>
           <div className='m-2 p-2'><Image src="/set.png" width={20.1} height={20} alt='set'></Image></div>
@@ -72,11 +74,44 @@ const page = () => {
           Found 12 verified medical stores near VIT Bhopal campus.
         </div>
         <div className='flex gap-5 m-2 p-2'>
-          <div className='bg-[#0049DB] px-8 py-2 rounded-full text-white font-semibold'>All</div>
-          <div className='px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]'>24/7 Pharmacy</div>
-          <div className='px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]'>Clinics</div>
-          <div className='px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]'>Pathology Labs</div>
-          <div className='px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]'>First Aid</div>
+          <button 
+            type="button" 
+            onClick={() => setActiveCategory("All")}
+            className={activeCategory === "All" ? "bg-[#0049DB] px-8 py-2 rounded-full text-white font-semibold" : "px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]"}
+          >
+            All
+          </button>
+          <button 
+            type="button" 
+            onClick={() => setActiveCategory("24/7 Pharmacy")}
+            className={activeCategory === "24/7 Pharmacy" ? "bg-[#0049DB] px-8 py-2 rounded-full text-white font-semibold" : "px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]"}
+          >
+            24/7 Pharmacy
+          </button>
+          <button 
+            type="button" 
+            onClick={() => setActiveCategory("Clinics")}
+            className={activeCategory === "Clinics" ? "bg-[#0049DB] px-8 py-2 rounded-full text-white font-semibold" : "px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]"}
+          >
+            Clinics
+          </button>
+          <button 
+            type="button" 
+            onClick={() => setActiveCategory("Pathology Labs")}
+            className={activeCategory === "Pathology Labs" ? "bg-[#0049DB] px-8 py-2 rounded-full text-white font-semibold" : "px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]"}
+          >
+            Pathology Labs
+          </button>
+          <button 
+            type="button" 
+            onClick={() => setActiveCategory("First Aid")}
+            className={activeCategory === "First Aid" ? "bg-[#0049DB] px-8 py-2 rounded-full text-white font-semibold" : "px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]"}
+          >
+            First Aid
+          </button>
+        </div>
+        <div className='h-[32rem] overflow-y-scroll overflow-x-hidden p-2'>
+          <MedicalList activeCategory={activeCategory} searchTerm={searchTerm} />
         </div>
       </div>
   )
