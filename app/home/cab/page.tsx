@@ -4,14 +4,26 @@ import Image from 'next/image'
 import LocationHeader from '@/app/Components/LocationHeader'
 import { useEffect } from 'react'
 import { useState } from 'react'
+import CabDriversList from '@/app/home/cab/components/CabDriversList'
 
-const page = () => {
+const CabPage = () => {
   const [address, setAddress] = useState<string>("Detecting location...");
+
+  type Category = "All" | "Shared Auto" | "Private Cab" | "E-Rickshaw";
+  const [activeCategory, setActiveCategory] = useState<Category>("All");
+
+  const vehicleTypeByCategory: Record<Category, string | null> = {
+    "All": null,
+    "Shared Auto": "Shared Auto",
+    "Private Cab": "Private Cab",
+    "E-Rickshaw": "E-Rickshaw",
+  };
 
   useEffect(() => {
     // 1. Check if the browser supports Geolocation
     if (!navigator.geolocation) {
-      setAddress("Location not supported");
+      // Avoid setting state synchronously inside the effect body.
+      setTimeout(() => setAddress("Location not supported"), 0);
       return;
     }
 
@@ -73,13 +85,40 @@ const page = () => {
         <div>transparent routes.</div>
       </div>
       <div className='flex gap-5 m-2 p-2'>
-        <div className='bg-[#0049DB] px-8 py-2 rounded-full text-white font-semibold'>All</div>
-        <div className='px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]'>Shared Auto</div>
-        <div className='px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]'>Private Cab</div>
-        <div className='px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]'>E-Rickshaw</div>
+        <button
+          type="button"
+          onClick={() => setActiveCategory("All")}
+          className={activeCategory === "All" ? "bg-[#0049DB] px-8 py-2 rounded-full text-white font-semibold" : "px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]"}
+        >
+          All
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveCategory("Shared Auto")}
+          className={activeCategory === "Shared Auto" ? "bg-[#0049DB] px-8 py-2 rounded-full text-white font-semibold" : "px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]"}
+        >
+          Shared Auto
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveCategory("Private Cab")}
+          className={activeCategory === "Private Cab" ? "bg-[#0049DB] px-8 py-2 rounded-full text-white font-semibold" : "px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]"}
+        >
+          Private Cab
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveCategory("E-Rickshaw")}
+          className={activeCategory === "E-Rickshaw" ? "bg-[#0049DB] px-8 py-2 rounded-full text-white font-semibold" : "px-8 py-2 rounded-full font-semibold bg-[#EDE1CF99]"}
+        >
+          E-Rickshaw
+        </button>
+      </div>
+      <div className='h-96 overflow-y-scroll overflow-x-hidden'>
+      <CabDriversList vehicleType={vehicleTypeByCategory[activeCategory]} />
       </div>
     </div>
   )
 }
 
-export default page
+export default CabPage
