@@ -59,7 +59,7 @@ const Sidebar = () => {
         onClick={() => setIsOpen(!isOpen)}
       >
         <div className='min-w-[40px] flex justify-center'>
-          <Image src={"/hl.png"} height={38} width={40} alt='l' />
+          <Image src={"/hl.png"} height={33} width={35} alt='l' />
         </div>
         {isOpen && (
           <div className="text-3xl font-bold text-blue-700 whitespace-nowrap transition-all duration-300">
@@ -69,11 +69,11 @@ const Sidebar = () => {
       </div>
 
       {/* Navigation Items — labels removed from layout when collapsed so width never exceeds the rail */}
-      <div className='flex-1 min-h-0 overflow-y-auto overflow-x-hidden my-2 py-2 flex flex-col gap-10'>
+      <div className='flex-1 min-h-0 overflow-y-auto overflow-x-hidden my-2 py-2 flex flex-col gap-7'>
         {/* Home */}
         <Link href={"/home"}><div className={`flex gap-5 items-center cursor-pointer px-4 py-2 w-full transition-colors ${getActiveClass("/home")}`}>
           <div className='min-w-[40px] flex justify-center'>
-            <Image src={"/h.png"} height={35} width={35} alt='h' />
+            <Image src={"/h.png"} height={25} width={25} alt='h' />
           </div>
           {isOpen && (
             <div className={`text-lg whitespace-nowrap ${getActiveClass1("/home")}`}>Home</div>
@@ -84,7 +84,7 @@ const Sidebar = () => {
         {/* Saved */}
         <div className={`flex gap-5 items-center cursor-pointer px-4 py-2 w-full transition-colors ${getActiveClass("/saved")}`}>
           <div className='min-w-[40px] flex justify-center'>
-            <Image src={"/ht.png"} height={37} width={37} alt='ht' />
+            <Image src={"/ht.png"} height={25} width={25} alt='ht' />
           </div>
           {isOpen && (
             <div className={`text-lg whitespace-nowrap ${getActiveClass1("/saved")}`}>Saved</div>
@@ -94,7 +94,7 @@ const Sidebar = () => {
         {/* History */}
         <div className={`flex gap-5 items-center cursor-pointer px-4 py-2 w-full transition-colors ${getActiveClass("/history")}`}>
           <div className='min-w-[40px] flex justify-center'>
-            <Image src={"/hs.png"} height={36} width={36} alt='hs' />
+            <Image src={"/hs.png"} height={25} width={25} alt='hs' />
           </div>
           {isOpen && (
             <div className={`text-lg whitespace-nowrap ${getActiveClass1("/history")}`}>History</div>
@@ -104,7 +104,7 @@ const Sidebar = () => {
         {/* Support */}
         <div className={`flex gap-5 items-center cursor-pointer px-4 py-2 w-full transition-colors ${getActiveClass("/support")}`}>
           <div className='min-w-[40px] flex justify-center'>
-            <Image src={"/c.png"} height={33} width={33} alt='c' />
+            <Image src={"/c.png"} height={25} width={25} alt='c' />
           </div>
           {isOpen && (
             <div className={`text-lg whitespace-nowrap ${getActiveClass1("/support")}`}>Support</div>
@@ -118,10 +118,10 @@ const Sidebar = () => {
           type="button"
           className={`flex items-center justify-center gap-2 rounded-2xl bg-[#0047E1] text-white font-bold transition-opacity hover:opacity-90 shrink-0 ${isOpen
               ? 'w-full py-3 px-3'
-              : 'mx-auto size-12 min-h-12 min-w-12 rounded-full p-0'
+              : 'mx-auto size-10 min-h-10 min-w-10 rounded-full p-0'
             }`}
         >
-          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 border-white text-lg leading-none">
+          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 border-white text-lg leading-none">
             +
           </span>
           {isOpen && (
@@ -155,11 +155,11 @@ const Sidebar = () => {
                 alt=""
                 width={48}
                 height={48}
-                className="size-12 min-h-12 min-w-12 shrink-0 rounded-full object-cover aspect-square"
+                className="size-10 min-h-10 min-w-10 shrink-0 rounded-full object-cover aspect-square"
                 referrerPolicy="no-referrer"
               />
             ) : (
-              <div className="flex size-12 min-h-12 min-w-12 shrink-0 items-center justify-center rounded-full bg-orange-400 text-lg font-semibold text-white aspect-square">
+              <div className="flex size-10 min-h-10 min-w-10 shrink-0 items-center justify-center rounded-full bg-orange-400 text-lg font-semibold text-white aspect-square">
                 {displayName.charAt(0).toUpperCase()}
               </div>
             )}

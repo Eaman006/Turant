@@ -30,8 +30,16 @@ const page = () => {
             </div>
             </Link>
             <Link href="/home/pg">
-            <div className='bg-[#8E44AD] rounded-2xl p-2'>
-              <div className='m-2 p-4 h-40'><Image src={"/ho.png"} height={139} width={176} alt='ho'></Image></div>
+            <div className='bg-[#8E44AD] rounded-2xl cursor-pointer'>
+              <div className='m-2 p-4 h-40 flex items-center justify-center'>
+                <Image
+                  src={"/ho.png"}
+                  height={139}
+                  width={176}
+                  alt='ho'
+                  className='w-full h-full object-contain'
+                ></Image>
+              </div>
               <div className='text-center text-white font-bold text-xl'>PG & Hotels</div>
             </div>
             </Link>
