@@ -183,7 +183,7 @@ export default function MedicalCard({ place }: { place: MedicalPlace }) {
             <div className="flex items-start justify-between gap-4">
               <div>
                 <div className="text-[#201B10] font-extrabold text-lg">
-                  Report
+                  Report Medical Store
                 </div>
                 <div className="text-sm text-gray-600 mt-1">
                   Tell us what went wrong (optional).

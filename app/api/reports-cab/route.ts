@@ -32,11 +32,13 @@ export async function POST(req: Request) {
 
     if (!cabId) return new NextResponse("Missing cab_id", { status: 400 });
 
-    const { supabase, error } = getSupabaseClient() as
-      | { supabase: ReturnType<typeof createClient> }
-      | { error: string };
+    const clientResult = getSupabaseClient();
 
-    if (!supabase) return new NextResponse((error as string) ?? "Server error", { status: 500 });
+    if ("error" in clientResult) {
+      return new NextResponse(clientResult.error, { status: 500 });
+    }
+
+    const { supabase } = clientResult;
 
     const { error: insertError } = await supabase.from("reports_cabs").insert({
       cab_id: cabId,
