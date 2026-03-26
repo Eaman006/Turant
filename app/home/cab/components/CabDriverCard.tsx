@@ -49,7 +49,7 @@ export default function CabDriverCard({ driver }: { driver: CabDriver }) {
 
     setIsReporting(true);
     try {
-      const res = await fetch("/api/report-driver", {
+      const res = await fetch("/api/reports-cab", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

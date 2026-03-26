@@ -1,7 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
+import { auth } from "@/lib/firebase";
 
 export type GroceryPlace = {
   id?: string;
@@ -18,6 +19,16 @@ export default function GroceryCard({ place }: { place: GroceryPlace }) {
   const address = place.address ?? "Address not provided";
   const mapLink = place.map_link ?? "#";
   const contact = place.contact_number ?? "";
+  const placeId = place.id ?? null;
+
+  const [isReporting, setIsReporting] = useState(false);
+  const [isReportOpen, setIsReportOpen] = useState(false);
+  const [reportReason, setReportReason] = useState("");
+  const [reportResult, setReportResult] = useState<
+    | { type: "success"; message: string }
+    | { type: "error"; message: string }
+    | null
+  >(null);
 
   const handleMapClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -25,6 +36,58 @@ export default function GroceryCard({ place }: { place: GroceryPlace }) {
       window.open(mapLink, "_blank", "noopener,noreferrer");
     }
   };
+
+  async function submitReport() {
+    setReportResult(null);
+
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+      window.alert("Please log in first to report.");
+      return;
+    }
+
+    if (!placeId) {
+      setReportResult({
+        type: "error",
+        message: "This place cannot be reported right now (missing id).",
+      });
+      return;
+    }
+
+    const reporterId = currentUser.uid;
+    const reporterName =
+      currentUser.displayName || currentUser.email || "Anonymous";
+
+    setIsReporting(true);
+    try {
+      const res = await fetch("/api/reports-place", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          places_id: placeId,
+          reason: reportReason,
+          reporter_id: reporterId,
+          reporter_name: reporterName,
+        }),
+      });
+
+      if (!res.ok) {
+        const text = await res.text().catch(() => "");
+        throw new Error(text || "Failed to submit report.");
+      }
+
+      setReportResult({ type: "success", message: "Report submitted. Thanks!" });
+      setReportReason("");
+      setIsReportOpen(false);
+    } catch (e: any) {
+      setReportResult({
+        type: "error",
+        message: e?.message || "Could not submit report. Please try again.",
+      });
+    } finally {
+      setIsReporting(false);
+    }
+  }
 
   return (
     <div className="bg-white rounded-[24px] shadow-sm border border-gray-100 flex overflow-hidden min-h-[140px] items-stretch pr-6 mb-4 gap-6">
@@ -60,12 +123,30 @@ export default function GroceryCard({ place }: { place: GroceryPlace }) {
             </div>
           </div>
           
-          <div className="flex items-center text-xs text-[#A8A8A8] font-bold cursor-pointer hover:text-gray-600 transition">
-            <svg className="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2v4z" />
+          <button
+            type="button"
+            onClick={() => {
+              setReportResult(null);
+              setIsReportOpen(true);
+            }}
+            disabled={isReporting}
+            className="text-xs font-semibold tracking-wide text-gray-500 hover:text-gray-700 transition disabled:opacity-60 disabled:cursor-not-allowed inline-flex items-center gap-1"
+          >
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              className="h-3.5 w-3.5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M4 22V4" />
+              <path d="M4 4h12l-1.5 3L16 10H4" />
             </svg>
-            REPORT
-          </div>
+            {isReporting ? "REPORTING..." : "REPORT"}
+          </button>
         </div>
 
         <div className="flex justify-end items-center mt-4">
@@ -86,6 +167,80 @@ export default function GroceryCard({ place }: { place: GroceryPlace }) {
           )}
         </div>
       </div>
+
+      {isReportOpen ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <button
+            type="button"
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            aria-label="Close report dialog"
+            onClick={() => {
+              if (isReporting) return;
+              setIsReportOpen(false);
+            }}
+          />
+          <div className="relative w-full max-w-md rounded-3xl bg-white shadow-xl border border-gray-100 p-5 font-[family-name:var(--font-poppins)]">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <div className="text-[#201B10] font-extrabold text-lg">
+                  Report
+                </div>
+                <div className="text-sm text-gray-600 mt-1">
+                  Tell us what went wrong (optional).
+                </div>
+              </div>
+              <button
+                type="button"
+                className="text-gray-400 hover:text-gray-600 transition"
+                aria-label="Close"
+                onClick={() => {
+                  if (isReporting) return;
+                  setIsReportOpen(false);
+                }}
+              >
+                ✕
+              </button>
+            </div>
+
+            <textarea
+              value={reportReason}
+              onChange={(e) => setReportReason(e.target.value)}
+              rows={4}
+              placeholder="Example: Wrong info / Not reachable..."
+              className="mt-4 w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none focus:border-gray-300 focus:bg-white"
+              disabled={isReporting}
+            />
+
+            {reportResult?.type === "error" ? (
+              <div className="mt-3 text-sm text-red-600">
+                {reportResult.message}
+              </div>
+            ) : null}
+
+            <div className="mt-4 flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  if (isReporting) return;
+                  setIsReportOpen(false);
+                }}
+                className="px-4 py-2 rounded-xl border border-gray-200 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition disabled:opacity-60 disabled:cursor-not-allowed"
+                disabled={isReporting}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={submitReport}
+                className="px-4 py-2 rounded-xl bg-[#0049DB] text-white text-sm font-semibold hover:opacity-95 transition disabled:opacity-60 disabled:cursor-not-allowed"
+                disabled={isReporting}
+              >
+                {isReporting ? "Submitting..." : "Submit report"}
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
