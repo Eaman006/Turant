@@ -70,7 +70,7 @@ const page = () => {
           Student PGs & Hotels nearby
         </div>
         <div className='m-2 p-2'>
-          Found 42 verified listings near VIT Bhopal campus. Reliable stays with transparent amenities.
+          Found 42 listings near VIT Bhopal campus. 
         </div>
         <div className='flex gap-5 m-2 p-2'>
           <button 

@@ -72,7 +72,7 @@ const page = () => {
               Top Restaurants & Tiffin Services nearby
             </div>
             <div className='m-2 p-2'>
-              Found 18 verified shops near VIT Bhopal campus. Reliable stores with fast delivery.
+              Found 18 Restaurant near VIT Bhopal campus.
             </div>
             <div className='flex gap-5 m-2 p-2'>
               <button 

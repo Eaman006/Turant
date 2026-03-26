@@ -72,7 +72,7 @@ const page = () => {
             Local Grocery & Daily Needs
           </div>
           <div className='m-2 p-2'>
-            FFound 18 verified shops near VIT Bhopal campus. Reliable stores with fast delivery.
+            Found 18 shops near VIT Bhopal campus.
           </div>
           <div className='flex gap-5 m-2 p-2'>
             <button 

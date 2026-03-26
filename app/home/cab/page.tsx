@@ -81,7 +81,7 @@ const CabPage = () => {
         Cabs & Autos in Kothri Kalan
       </div>
       <div className='m-2 p-2'>
-        Find reliable transportation options near your hostel. Verified drivers with
+        Find reliable transportation options near your hostel. Drivers with
         <div>transparent routes.</div>
       </div>
       <div className='flex gap-5 m-2 p-2'>

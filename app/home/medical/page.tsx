@@ -71,7 +71,7 @@ const page = () => {
           Pharmacies & Clinics nearby
         </div>
         <div className='m-2 p-2'>
-          Found 12 verified medical stores near VIT Bhopal campus.
+          Found 12 medical stores near VIT Bhopal campus.
         </div>
         <div className='flex gap-5 m-2 p-2'>
           <button 
