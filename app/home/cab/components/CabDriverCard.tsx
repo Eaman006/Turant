@@ -9,6 +9,7 @@ export type CabDriver = {
   vehicle_type: string | null;
   id: string | null;
   vehicle: string | null;
+  description?: string | null;
 };
 
 function getInitials(name: string | null) {
@@ -19,7 +20,7 @@ function getInitials(name: string | null) {
   return (first + second).toUpperCase();
 }
 
-export default function CabDriverCard({ driver }: { driver: CabDriver }) {
+export default function CabDriverCard({ driver, matchScore }: { driver: CabDriver; matchScore?: number }) {
   const driverName = driver.driver_name ?? "Unknown driver";
   const vehicleType = driver.vehicle_type ?? "—";
   const phone = driver.phone_number ?? "";
@@ -79,7 +80,12 @@ export default function CabDriverCard({ driver }: { driver: CabDriver }) {
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-5 flex items-start justify-between gap-6">
+    <div className="relative bg-white rounded-2xl shadow-md border border-gray-100 p-5 flex items-start justify-between gap-6">
+      {typeof matchScore === 'number' ? (
+        <span className="absolute right-3 top-3 bg-blue-100 text-blue-700 text-xs font-semibold px-2 py-1 rounded-full">
+          {Math.round(matchScore * 100)}% Match
+        </span>
+      ) : null}
       <div className="flex items-start gap-3">
         <div className="w-12 h-12 rounded-full bg-[#EDE1CF99] flex items-center justify-center font-bold text-[#201B10]">
           {initials}

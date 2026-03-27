@@ -12,12 +12,18 @@ export default function SearchCabs({ onSearch }: SearchCabsProps) {
 
   const handleSearch = () => {
     onSearch(searchTerm);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('turant_last_search', searchTerm);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setSearchTerm(val);
     onSearch(val);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('turant_last_search', val);
+    }
   };
 
   return (

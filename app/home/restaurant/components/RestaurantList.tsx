@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/app/lib/supabaseClient";
 import RestaurantCard, { RestaurantPlace } from "./RestaurantCard";
+import Fuse from "fuse.js";
 
 export default function RestaurantList({
   activeCategory,
@@ -75,17 +76,15 @@ export default function RestaurantList({
       );
     }
 
-    if (!searchTerm?.trim()) return categoryFiltered;
-    const lowerTerm = searchTerm.toLowerCase();
+    const query = searchTerm?.trim();
+    if (!query) return categoryFiltered;
 
-    return categoryFiltered.filter((place) => {
-      return Object.values(place).some((val) => {
-        if (val && typeof val !== "object") {
-          return String(val).toLowerCase().includes(lowerTerm);
-        }
-        return false;
-      });
+    const fuse = new Fuse(categoryFiltered, {
+      threshold: 0.3,
+      keys: ["name", "category", "Place_category", "address"],
     });
+
+    return fuse.search(query).map((result) => result.item);
   }, [places, activeCategory, searchTerm]);
 
   return (
