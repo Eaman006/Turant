@@ -82,7 +82,8 @@ const Sidebar = () => {
         </Link>
 
         {/* Saved */}
-        <div className={`flex gap-5 items-center cursor-pointer px-4 py-2 w-full transition-colors ${getActiveClass("/saved")}`}>
+        <Link href={"/home/saved"}>
+        <div className={`flex gap-5 items-center cursor-pointer px-4 py-2 w-full transition-colors ${getActiveClass("/home/saved")}`}>
           <div className='min-w-[40px] flex justify-center'>
             <Image src={"/ht.png"} height={25} width={25} alt='ht' />
           </div>
@@ -90,17 +91,7 @@ const Sidebar = () => {
             <div className={`text-lg whitespace-nowrap ${getActiveClass1("/saved")}`}>Saved</div>
           )}
         </div>
-
-        {/* History */}
-        <div className={`flex gap-5 items-center cursor-pointer px-4 py-2 w-full transition-colors ${getActiveClass("/history")}`}>
-          <div className='min-w-[40px] flex justify-center'>
-            <Image src={"/hs.png"} height={25} width={25} alt='hs' />
-          </div>
-          {isOpen && (
-            <div className={`text-lg whitespace-nowrap ${getActiveClass1("/history")}`}>History</div>
-          )}
-        </div>
-
+        </Link>
         {/* Support */}
         <div className={`flex gap-5 items-center cursor-pointer px-4 py-2 w-full transition-colors ${getActiveClass("/support")}`}>
           <div className='min-w-[40px] flex justify-center'>
@@ -117,8 +108,8 @@ const Sidebar = () => {
         <button
           type="button"
           className={`flex items-center justify-center gap-2 rounded-2xl bg-[#0047E1] text-white font-bold transition-opacity hover:opacity-90 shrink-0 ${isOpen
-              ? 'w-full py-3 px-3'
-              : 'mx-auto size-10 min-h-10 min-w-10 rounded-full p-0'
+            ? 'w-full py-3 px-3'
+            : 'mx-auto size-10 min-h-10 min-w-10 rounded-full p-0'
             }`}
         >
           <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 border-white text-lg leading-none">
@@ -145,8 +136,8 @@ const Sidebar = () => {
             type="button"
             onClick={() => setProfileMenuOpen((v) => !v)}
             className={`rounded-xl bg-[#FFF7ED] shadow-sm border border-[#F0E6D8] shrink-0 text-left w-full ${isOpen
-                ? 'flex flex-row items-center gap-3 p-3 min-w-0'
-                : 'flex items-center justify-center p-2 w-fit max-w-full mx-auto'
+              ? 'flex flex-row items-center gap-3 p-3 min-w-0'
+              : 'flex items-center justify-center p-2 w-fit max-w-full mx-auto'
               }`}
           >
             {photoURL ? (
