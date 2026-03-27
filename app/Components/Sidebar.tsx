@@ -93,7 +93,7 @@ const Sidebar = () => {
         </div>
         </Link>
         {/* Support */}
-        <div className={`flex gap-5 items-center cursor-pointer px-4 py-2 w-full transition-colors ${getActiveClass("/support")}`}>
+        <Link href={"/home/support"}><div className={`flex gap-5 items-center cursor-pointer px-4 py-2 w-full transition-colors ${getActiveClass("/home/support")}`}>
           <div className='min-w-[40px] flex justify-center'>
             <Image src={"/c.png"} height={25} width={25} alt='c' />
           </div>
@@ -101,24 +101,12 @@ const Sidebar = () => {
             <div className={`text-lg whitespace-nowrap ${getActiveClass1("/support")}`}>Support</div>
           )}
         </div>
+        </Link>
       </div>
 
       {/* Add listing + signed-in user — shrink-0 + fixed circle sizes so collapsed mode never squishes */}
       <div className="shrink-0 px-2 pb-5 pt-2 flex flex-col gap-3 items-stretch min-w-0">
-        <button
-          type="button"
-          className={`flex items-center justify-center gap-2 rounded-2xl bg-[#0047E1] text-white font-bold transition-opacity hover:opacity-90 shrink-0 ${isOpen
-            ? 'w-full py-3 px-3'
-            : 'mx-auto size-10 min-h-10 min-w-10 rounded-full p-0'
-            }`}
-        >
-          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 border-white text-lg leading-none">
-            +
-          </span>
-          {isOpen && (
-            <span className="whitespace-nowrap">Add Listing</span>
-          )}
-        </button>
+        
 
         <div ref={profileMenuRef} className="relative shrink-0 w-full min-w-0">
           {profileMenuOpen && (
