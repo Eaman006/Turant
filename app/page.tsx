@@ -27,7 +27,7 @@ export default function Home() {
         </div>
 
       </div>
-      <div className="p-4 flex flex-col gap-10 items-center justify-center bg-[url('/back2.png')] bg-contain">
+      <div id="services" className="p-4 flex flex-col gap-10 items-center justify-center bg-[url('/back2.png')] bg-contain">
         <div className="bg-[#3269C3] p-4 flex justify-between w-9/10 mt-4 rounded-4xl">
           <div className="">
             <div className="font-[family-name:var(--font-poppins)] text-5xl text-white font-semibold m-4 p-4">
@@ -89,7 +89,7 @@ export default function Home() {
           <Image src="https://ik.imagekit.io/builswb4k/public/Pharmacy.gif?updatedAt=1763987941838" height={292} width={400} alt="car"></Image>
         </div>
       </div>
-      <div className="p-10 bg-[#FFF3E0]">
+      <div id="about-us" className="p-10 bg-[#FFF3E0]">
         <div className="text-[#E67E22] text-3xl font-bold m-2 font-[family-name:var(--font-poppins)] w-fit">
           ABOUT US
           <div className="bg-[#E67E22] w-1/2 h-1"></div>
