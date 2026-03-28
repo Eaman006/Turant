@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { auth } from "@/lib/firebase";
 import RatePGModal from "./RatePGModal";
+import { useSavedContacts } from "@/app/home/SavedContactsProvider";
 
 export type PGPlace = {
   id?: string;
@@ -52,6 +53,13 @@ export default function PGCard({ place }: { place: PGPlace }) {
     });
     return () => unsubscribe();
   }, [place.rating_users]);
+
+  const { savedPlaces, toggleSave: toggleGlobalSave } = useSavedContacts();
+  const isSaved = placeId ? savedPlaces.has(String(placeId)) : false;
+
+  const toggleSave = async () => {
+    if (placeId) await toggleGlobalSave("place", placeId);
+  };
 
   const handleMapClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -161,15 +169,32 @@ export default function PGCard({ place }: { place: PGPlace }) {
             </div>
           </div>
           
-          <button
-            type="button"
-            onClick={() => {
-              setReportResult(null);
-              setIsReportOpen(true);
-            }}
-            disabled={isReporting}
-            className="text-xs font-semibold tracking-wide text-gray-500 hover:text-gray-700 transition disabled:opacity-60 disabled:cursor-not-allowed inline-flex items-center gap-1"
-          >
+          <div className="flex items-center gap-4">
+            <button
+              type="button"
+              onClick={toggleSave}
+              className="text-[#FF6B00] hover:text-[#E56000] transition"
+              aria-label={isSaved ? "Unsave contact" : "Save contact"}
+            >
+              {isSaved ? (
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                  <path fillRule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clipRule="evenodd" />
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+                </svg>
+              )}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setReportResult(null);
+                setIsReportOpen(true);
+              }}
+              disabled={isReporting}
+              className="text-xs font-semibold tracking-wide text-gray-500 hover:text-gray-700 transition disabled:opacity-60 disabled:cursor-not-allowed inline-flex items-center gap-1"
+            >
             <svg
               aria-hidden="true"
               viewBox="0 0 24 24"
@@ -183,8 +208,9 @@ export default function PGCard({ place }: { place: PGPlace }) {
               <path d="M4 22V4" />
               <path d="M4 4h12l-1.5 3L16 10H4" />
             </svg>
-            {isReporting ? "REPORTING..." : "REPORT"}
-          </button>
+              {isReporting ? "REPORTING..." : "REPORT"}
+            </button>
+          </div>
         </div>
 
         <div className="flex justify-between items-center mt-4 w-full gap-4">
