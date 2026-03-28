@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { auth } from "@/lib/firebase";
+import Image from "next/image";
 
 export type CabDriver = {
   driver_name: string | null;
@@ -10,6 +11,7 @@ export type CabDriver = {
   id: string | null;
   vehicle: string | null;
   description?: string | null;
+  actual_rating: string | null;
 };
 
 function getInitials(name: string | null) {
@@ -25,6 +27,7 @@ export default function CabDriverCard({ driver, matchScore }: { driver: CabDrive
   const vehicleType = driver.vehicle_type ?? "—";
   const phone = driver.phone_number ?? "";
   const vehicle = driver.vehicle ?? "-";
+  const rating = driver.actual_rating ?? "-";
   const initials = getInitials(driver.driver_name);
 
   const callHref = phone ? `tel:${phone}` : undefined;
@@ -94,6 +97,16 @@ export default function CabDriverCard({ driver, matchScore }: { driver: CabDrive
         <div className="min-w-0">
           <div className="text-[#201B10] font-extrabold text-lg leading-tight truncate">
             {driverName}
+          </div>
+          <div className="flex gap-2 items-center">
+            <div ><Image src={"/star.png"} width={16.67} height={15.83} alt='s'></Image></div>
+            <div className="text-sm text-gray-600 mt-1">
+              {rating}
+            </div>
+            <div className="text-sm text-gray-600 mt-1">
+              Ratings
+            </div>
+            <div className="text-blue-600 font-bold cursor-pointer">[Rate this driver]</div>
           </div>
           <div className="text-sm text-gray-600 mt-1">
             Service: {vehicleType}

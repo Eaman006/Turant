@@ -86,7 +86,7 @@ export default function CabDriversList({
 
     const fuse = new Fuse(drivers, {
       threshold: 0.3,
-      keys: ["driver_name", "vehicle", "vehicle_type", "description", "phone_number"],
+      keys: ["driver_name", "vehicle", "vehicle_type", "description", "phone_number", "actual_rating"],
     });
 
     return fuse.search(query).map((result) => result.item);
