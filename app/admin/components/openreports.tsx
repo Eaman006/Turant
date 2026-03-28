@@ -1,33 +1,18 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { createClient } from "@supabase/supabase-js";
-
-// Initialize Supabase client
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 const OpenReports = () => {
   const [totalOpen, setTotalOpen] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchCounts = async () => {
-      // Use head: true to only get count of 'open' status rows
-      const { count: cabsCount, error: cabsError } = await supabase
-        .from('reports_cabs')
-        .select('*', { count: 'exact', head: true })
-        .ilike('report_status', '%open%');
-
-      const { count: placesCount, error: placesError } = await supabase
-        .from('reports_places')
-        .select('*', { count: 'exact', head: true })
-        .ilike('report_status', '%open%');
-
-      if (!cabsError && !placesError) {
-        setTotalOpen((cabsCount || 0) + (placesCount || 0));
-      } else {
-        console.error("Error fetching open reports count:", cabsError || placesError);
+      try {
+        const response = await fetch('/api/admin/stats');
+        const data = await response.json();
+        setTotalOpen(data.openReports);
+      } catch (error) {
+        console.error("Failed to securely fetch open reports:", error);
       }
     };
 

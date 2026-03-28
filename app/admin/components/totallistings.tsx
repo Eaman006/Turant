@@ -1,31 +1,18 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { createClient } from "@supabase/supabase-js";
-
-// Initialize Supabase client
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 const TotalListings = () => {
   const [total, setTotal] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchCounts = async () => {
-      // We use head: true to only get the count, saving bandwidth by avoiding data download.
-      const { count: cabsCount, error: cabsError } = await supabase
-        .from('Cabs')
-        .select('*', { count: 'exact', head: true });
-
-      const { count: placesCount, error: placesError } = await supabase
-        .from('places')
-        .select('*', { count: 'exact', head: true });
-
-      if (!cabsError && !placesError) {
-        setTotal((cabsCount || 0) + (placesCount || 0));
-      } else {
-        console.error("Error fetching counts:", cabsError || placesError);
+      try {
+        const response = await fetch('/api/admin/stats');
+        const data = await response.json();
+        setTotal(data.totalListings);
+      } catch (error) {
+        console.error("Error fetching total listings securely:", error);
       }
     };
 
