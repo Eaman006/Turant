@@ -93,10 +93,10 @@ function isVegIntentQuery(normalizedQuery: string, rawQuery: string): boolean {
  * "INDIAN FOOD" beats a loose "food" hit in other fields via tag weights.
  * Optional user-vector boost for logged interactions.
  */
-export function rankRestaurantsBySearch(
-  places: RestaurantSearchRankable[],
+export function rankRestaurantsBySearch<T extends RestaurantSearchRankable>(
+  places: T[],
   rawQuery: string
-): RestaurantSearchRankable[] {
+): T[] {
   const q = normalizeTagString(rawQuery);
   if (!q) return places;
 

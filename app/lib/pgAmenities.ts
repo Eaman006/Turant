@@ -75,10 +75,10 @@ const WEIGHT_FUZZY_TAG = 10_000;
  * Search + rank PG/Hotel rows: exact amenity phrase matches first, then fuzzy tag matches, then Fuse on other fields.
  * Multi-word tags are matched as whole phrases via Fuse on full canonical strings only (not word-split).
  */
-export function rankPgPlacesBySearch(
-  places: PGSearchRankable[],
+export function rankPgPlacesBySearch<T extends PGSearchRankable>(
+  places: T[],
   rawQuery: string
-): PGSearchRankable[] {
+): T[] {
   const q = normalizeTagString(rawQuery);
   if (!q) return places;
 

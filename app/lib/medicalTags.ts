@@ -60,10 +60,10 @@ export type MedicalSearchRankable = {
   tags?: string[] | null;
 };
 
-export function rankMedicalPlacesBySearch(
-  places: MedicalSearchRankable[],
+export function rankMedicalPlacesBySearch<T extends MedicalSearchRankable>(
+  places: T[],
   rawQuery: string
-): MedicalSearchRankable[] {
+): T[] {
   const q = normalizeTagString(rawQuery);
   if (!q) return places;
 

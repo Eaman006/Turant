@@ -52,10 +52,10 @@ export type GrocerySearchRankable = {
   tags?: string[] | null;
 };
 
-export function rankGroceryPlacesBySearch(
-  places: GrocerySearchRankable[],
+export function rankGroceryPlacesBySearch<T extends GrocerySearchRankable>(
+  places: T[],
   rawQuery: string
-): GrocerySearchRankable[] {
+): T[] {
   const q = normalizeTagString(rawQuery);
   if (!q) return places;
 
