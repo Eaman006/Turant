@@ -100,7 +100,6 @@ const page = () => {
 
       </div>
 
-
     </div>
   )
 }
