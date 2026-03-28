@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/app/lib/supabaseClient";
 import PGCard, { PGPlace } from "./PGCard";
 import { rankPgPlacesBySearch } from "@/app/lib/pgAmenities";
+import PersonalizedRecommendations from "@/app/Components/PersonalizedRecommendations";
 
 export default function PGList({
   activeCategory,
@@ -90,6 +91,18 @@ export default function PGList({
           No matches found.
         </div>
       )}
+
+      <PersonalizedRecommendations
+        sectionName="pgHotels"
+        data={filteredPlaces}
+        visible={!searchTerm?.trim()}
+        renderItem={(place) => (
+          <PGCard
+            key={place.id ?? `${place.name ?? "place"}-rec`}
+            place={place}
+          />
+        )}
+      />
 
       <div className="grid grid-cols-1 mt-4">
         {filteredPlaces.map((place, idx) => (

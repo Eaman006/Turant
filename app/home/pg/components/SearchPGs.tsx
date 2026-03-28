@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { trackSearch } from '@/app/lib/personalization/trackSearch';
 
 interface SearchPGsProps {
   onSearch: (term: string) => void;
@@ -12,12 +13,14 @@ export default function SearchPGs({ onSearch }: SearchPGsProps) {
 
   const handleSearch = () => {
     onSearch(searchTerm);
+    trackSearch(searchTerm, "pgHotels");
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setSearchTerm(val);
     onSearch(val);
+    // Track search debounced or optionally on typing, but handleSearch tracks it on explicit search
   };
 
   return (

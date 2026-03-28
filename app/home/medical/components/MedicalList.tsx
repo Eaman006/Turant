@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/app/lib/supabaseClient";
 import MedicalCard, { MedicalPlace } from "./MedicalCard";
 import { rankMedicalPlacesBySearch } from "@/app/lib/medicalTags";
+import PersonalizedRecommendations from "@/app/Components/PersonalizedRecommendations";
 
 export default function MedicalList({
   activeCategory,
@@ -100,6 +101,18 @@ export default function MedicalList({
           No matches found.
         </div>
       )}
+
+      <PersonalizedRecommendations
+        sectionName="pharmacy"
+        data={filteredPlaces}
+        visible={!searchTerm?.trim()}
+        renderItem={(place) => (
+          <MedicalCard
+            key={place.id ?? `${place.name ?? "place"}-rec`}
+            place={place}
+          />
+        )}
+      />
 
       <div className="grid grid-cols-1 mt-4">
         {filteredPlaces.map((place, idx) => (

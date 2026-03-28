@@ -3,15 +3,13 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/app/lib/supabaseClient";
 import CabDriverCard, { CabDriver } from "./CabDriverCard";
-import { diceCoefficient } from "@/app/lib/similarity";
 import Fuse from "fuse.js";
 import {
   extractCabWhitelistTags,
   getPersonalizedList,
   PROFILE_UPDATED_EVENT,
 } from "@/app/lib/personalization";
-
-type DriverWithScore = CabDriver & { matchScore: number };
+import PersonalizedRecommendations from "@/app/Components/PersonalizedRecommendations";
 
 export default function CabDriversList({
   vehicleType,
@@ -23,16 +21,8 @@ export default function CabDriversList({
   const [drivers, setDrivers] = useState<CabDriver[]>([]);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [lastSearchQuery, setLastSearchQuery] = useState<string>("");
   /** Bumps when the category profile vector changes so re-ranking runs again. */
   const [profileTick, setProfileTick] = useState(0);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem("turant_last_search") || "";
-      setLastSearchQuery(stored.trim());
-    }
-  }, []);
 
   useEffect(() => {
     const onProfile = () => setProfileTick((t) => t + 1);
@@ -118,37 +108,6 @@ export default function CabDriversList({
     [filteredDrivers, profileTick]
   );
 
-  const recommendedDrivers = useMemo<DriverWithScore[]>(() => {
-    const query = lastSearchQuery?.trim();
-    if (!query) return [];
-
-    return drivers
-      .map((driver) => {
-        const name = driver.driver_name ?? "";
-        const carModel = driver.vehicle ?? "";
-        const description = (driver.description ?? driver.vehicle_type ?? "");
-
-        const score = Math.max(
-          diceCoefficient(name, query),
-          diceCoefficient(carModel, query),
-          diceCoefficient(description, query)
-        );
-
-        return { ...driver, matchScore: score };
-      })
-      .filter((driver) => driver.matchScore > 0.3)
-      .sort((a, b) => b.matchScore - a.matchScore);
-  }, [drivers, lastSearchQuery]);
-
-  const recommendedIds = useMemo(() => new Set(recommendedDrivers.map((d) => d.id ?? `${d.driver_name ?? ''}-${d.phone_number ?? ''}`)), [recommendedDrivers]);
-
-  const allDrivers = useMemo(() => {
-    return personalizedDrivers.filter((driver) => {
-      const id = driver.id ?? `${driver.driver_name ?? ''}-${driver.phone_number ?? ''}`;
-      return !recommendedIds.has(id);
-    });
-  }, [personalizedDrivers, recommendedIds]);
-
   return (
     <div className="px-2 pb-10">
       {loading && (
@@ -169,24 +128,21 @@ export default function CabDriversList({
         </div>
       )}
 
-      {recommendedDrivers.length > 0 && (
-        <div className="rounded-2xl bg-blue-50 p-4 mb-4 border border-blue-100">
-          <div className="mb-3 text-lg font-bold text-blue-800">Recommended for You</div>
-          <div className="grid grid-cols-1 gap-4">
-            {recommendedDrivers.map((driver) => (
-              <CabDriverCard
-                key={driver.id ?? `${driver.driver_name ?? "driver"}-${driver.phone_number ?? "phone"}`}
-                driver={driver}
-                matchScore={driver.matchScore}
-              />
-            ))}
-          </div>
-        </div>
-      )}
+      <PersonalizedRecommendations
+        sectionName="cabs"
+        data={drivers}
+        visible={!searchTerm?.trim()}
+        renderItem={(driver) => (
+          <CabDriverCard
+            key={driver.id ?? `${driver.driver_name ?? "driver"}-${driver.phone_number ?? "phone"}`}
+            driver={driver}
+          />
+        )}
+      />
 
       <div className="text-sm font-semibold mb-2">All Drivers</div>
       <div className="grid grid-cols-1 gap-4 mt-0">
-        {allDrivers.map((driver) => (
+        {personalizedDrivers.map((driver: CabDriver) => (
           <CabDriverCard
             key={driver.id ?? `${driver.driver_name ?? "driver"}-${driver.phone_number ?? "phone"}`}
             driver={driver}

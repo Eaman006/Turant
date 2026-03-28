@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/app/lib/supabaseClient";
 import RestaurantCard, { RestaurantPlace } from "./RestaurantCard";
 import { rankRestaurantsBySearch } from "@/app/lib/restaurantTags";
+import PersonalizedRecommendations from "@/app/Components/PersonalizedRecommendations";
 
 export default function RestaurantList({
   activeCategory,
@@ -101,6 +102,18 @@ export default function RestaurantList({
           No matches found.
         </div>
       )}
+
+      <PersonalizedRecommendations
+        sectionName="restaurants"
+        data={filteredPlaces}
+        visible={!searchTerm?.trim()}
+        renderItem={(place) => (
+          <RestaurantCard
+            key={place.id ?? `${place.name ?? "place"}-rec`}
+            place={place}
+          />
+        )}
+      />
 
       <div className="grid grid-cols-1 mt-4">
         {filteredPlaces.map((place, idx) => (

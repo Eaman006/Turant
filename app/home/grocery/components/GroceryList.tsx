@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/app/lib/supabaseClient";
 import GroceryCard, { GroceryPlace } from "./GroceryCard";
 import { rankGroceryPlacesBySearch } from "@/app/lib/groceryTags";
+import PersonalizedRecommendations from "@/app/Components/PersonalizedRecommendations";
 
 export default function GroceryList({
   activeCategory,
@@ -100,6 +101,18 @@ export default function GroceryList({
           No matches found.
         </div>
       )}
+
+      <PersonalizedRecommendations
+        sectionName="grocery"
+        data={filteredPlaces}
+        visible={!searchTerm?.trim()}
+        renderItem={(place) => (
+          <GroceryCard
+            key={place.id ?? `${place.name ?? "place"}-rec`}
+            place={place}
+          />
+        )}
+      />
 
       <div className="grid grid-cols-1 mt-4">
         {filteredPlaces.map((place, idx) => (
