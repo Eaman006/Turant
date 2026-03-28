@@ -1,11 +1,13 @@
-import React from 'react'
+'use client';
 
-const page = () => {
+import React from 'react';
+
+const AdminPage = () => {
   return (
-    <div>
-      
+    <div className="">
+              
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default AdminPage;
