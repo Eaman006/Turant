@@ -12,6 +12,7 @@ interface Ticket {
   status: string;
   name: string;
   created_at: string;
+  gmail?: string | null;
 }
 
 export default function SupportTicketForm() {
@@ -77,6 +78,7 @@ export default function SupportTicketForm() {
         user_id: user.uid,
         status: 'pending',
         name: user.displayName || 'App User',
+        gmail: user.email,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       };
