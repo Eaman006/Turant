@@ -42,7 +42,8 @@ export default function CabDriversList({
       try {
         let query = supabase
           .from("Cabs")
-          .select("*");
+          .select("*")
+          .order("driver_name", { ascending: true });
 
         if (filterVehicleType) {
           if (filterVehicleType === "Shared Auto") {

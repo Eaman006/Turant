@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { auth } from "@/lib/firebase";
 import Image from "next/image";
+import RateDriverModal from "./RateDriverModal";
 
 export type CabDriver = {
   driver_name: string | null;
@@ -12,6 +13,7 @@ export type CabDriver = {
   vehicle: string | null;
   description?: string | null;
   actual_rating: string | null;
+  rating_users?: string[] | null;
 };
 
 function getInitials(name: string | null) {
@@ -39,6 +41,22 @@ export default function CabDriverCard({ driver, matchScore }: { driver: CabDrive
     | { type: "error"; message: string }
     | null
   >(null);
+  const [isRateOpen, setIsRateOpen] = useState(false);
+  const [hasRated, setHasRated] = useState(false);
+
+  useEffect(() => {
+    if (auth.currentUser && driver.rating_users?.includes(auth.currentUser.uid)) {
+      setHasRated(true);
+    }
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user && driver.rating_users?.includes(user.uid)) {
+        setHasRated(true);
+      } else {
+        setHasRated(false);
+      }
+    });
+    return () => unsubscribe();
+  }, [driver.rating_users]);
 
   async function submitReport() {
     setReportResult(null);
@@ -106,7 +124,12 @@ export default function CabDriverCard({ driver, matchScore }: { driver: CabDrive
             <div className="text-sm text-gray-600 mt-1">
               Ratings
             </div>
-            <div className="text-blue-600 font-bold cursor-pointer">[Rate this driver]</div>
+            <div 
+              className="text-blue-600 font-bold cursor-pointer"
+              onClick={() => setIsRateOpen(true)}
+            >
+              [{hasRated ? "Edit ratings" : "Rate this driver"}]
+            </div>
           </div>
           <div className="text-sm text-gray-600 mt-1">
             Service: {vehicleType}
@@ -241,6 +264,13 @@ export default function CabDriverCard({ driver, matchScore }: { driver: CabDrive
             </div>
           </div>
         </div>
+      ) : null}
+
+      {isRateOpen ? (
+        <RateDriverModal
+          cabId={driver.id || ""}
+          onClose={() => setIsRateOpen(false)}
+        />
       ) : null}
     </div>
   );
