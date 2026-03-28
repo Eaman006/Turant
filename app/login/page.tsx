@@ -185,60 +185,8 @@ const Page: React.FC = () => {
               Namaste!
             </div>
 
-            <div className="flex flex-col gap-1">
-              <label className='text-[#333333] text-sm font-bold'>
-                Phone Number
-              </label>
-              <div className="relative">
-                <PhoneInput
-                  country={'in'}
-                  value={phoneNumber}
-                  onChange={(phone) => {
-                    setPhoneNumber(phone);
-                    if (error) setError("");
-                  }}
-                  inputStyle={{
-                    height: '52px',
-                    width: '100%',
-                    fontSize: '1.25rem',
-                    fontWeight: '500',
-                    background: '#F5F5F5',
-                    borderRadius: '8px',
-                    border: error ? '1px solid #ef4444' : '1px solid #e5e7eb'
-                  }}
-                  buttonStyle={{
-                    height: '52px',
-                    borderTopLeftRadius: '8px',
-                    borderBottomLeftRadius: '8px',
-                    border: error ? '1px solid #ef4444' : '1px solid #e5e7eb'
-                  }}
-                  dropdownStyle={{
-                    fontSize: '2rem'
-                  }}
-                />
-                {error && (
-                  <p className="text-red-500 text-xs mt-1 font-medium">
-                    {error}
-                  </p>
-                )}
-              </div>
-            </div>
+        
             
-            <div className='flex justify-center'>
-              <button
-                type="submit"
-                disabled={loading}
-                className={`w-1/2 py-3 text-white text-lg font-bold rounded-lg transition-all shadow-md cursor-pointer ${loading ? 'bg-gray-400' : 'bg-[#E67E22] hover:bg-[#d6711c]'}`}
-              >
-                {loading ? "SENDING..." : "GET OTP"}
-              </button>
-            </div>
-
-            <div className='flex items-center gap-4'>
-              <div className="flex-grow border-t border-gray-200"></div>
-              <span className="text-gray-400 text-sm">OR</span>
-              <div className="flex-grow border-t border-gray-200"></div>
-            </div>
 
             <button
               type="button"
