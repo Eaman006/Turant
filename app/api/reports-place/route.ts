@@ -45,6 +45,7 @@ export async function POST(req: Request) {
       reason,
       reporter_id: reporterId,
       reporter_name: reporterName,
+      report_status: "open",
     });
 
     if (!insertError) {
@@ -84,6 +85,7 @@ export async function POST(req: Request) {
         reason: updatedReason,
         reporter_id: reporterId || null,
         reporter_name: reporterName || null,
+        report_status: "open",
       })
       .eq("id", existing.id);
 

@@ -1,6 +1,8 @@
 'use client';
 
 import React from 'react';
+import TotalListings from './components/totallistings';
+import PendingApproval from './components/pendingapproval';
 
 const AdminPage = () => {
   return (
@@ -16,48 +18,12 @@ const AdminPage = () => {
       </div>
 
       {/* Top Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         {/* Card 1 */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between">
-          <div className="flex justify-between items-start mb-4">
-            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Total Listings</span>
-            <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 22h14a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v4"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M3 15h6"/><path d="M3 18h6"/><path d="M3 12h6"/></svg>
-            </div>
-          </div>
-          <div className="flex items-baseline gap-3">
-            <span className="text-4xl font-extrabold text-gray-900">142</span>
-            <span className="text-sm font-bold text-[#2ECC71]">+5 this week</span>
-          </div>
-        </div>
+        <TotalListings />
 
         {/* Card 2 */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between">
-          <div className="flex justify-between items-start mb-4">
-            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Pending Approvals</span>
-            <div className="w-10 h-10 bg-orange-50 text-[#FF5A25] rounded-lg flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><circle cx="12" cy="13" r="3"/><path d="M12 10v3l2 1"/></svg>
-            </div>
-          </div>
-          <div className="flex items-baseline gap-3">
-            <span className="text-4xl font-extrabold text-gray-900">12</span>
-            <span className="text-sm font-bold text-[#FF5A25]">Requires review</span>
-          </div>
-        </div>
-
-        {/* Card 3 */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between">
-          <div className="flex justify-between items-start mb-4">
-            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Active Users</span>
-            <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            </div>
-          </div>
-          <div className="flex items-baseline gap-3">
-            <span className="text-4xl font-extrabold text-gray-900">1,840</span>
-            <span className="text-sm font-bold text-gray-500">Students & Locals</span>
-          </div>
-        </div>
+        <PendingApproval />
 
         {/* Card 4 */}
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between">
