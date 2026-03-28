@@ -59,6 +59,71 @@ export default function CabDriverCard({ driver, matchScore }: { driver: CabDrive
     return () => unsubscribe();
   }, [driver.rating_users]);
 
+  useEffect(() => {
+    let active = true;
+    const fetchSavedStatus = async (userUid: string) => {
+      try {
+        const res = await fetch(`/api/saved-contacts?user_id=${userUid}`);
+        if (res.ok && active) {
+          const data = await res.json();
+          const isSavedDb = data.some((item: any) => item.listingcabs_id === driver.id);
+          setIsSaved(isSavedDb);
+        }
+      } catch (e) {
+        console.error("Failed to fetch saved status", e);
+      }
+    };
+    
+    if (auth.currentUser) {
+      fetchSavedStatus(auth.currentUser.uid);
+    }
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        fetchSavedStatus(user.uid);
+      } else if (active) {
+        setIsSaved(false);
+      }
+    });
+    return () => {
+      active = false;
+      unsubscribe();
+    };
+  }, [driver.id]);
+
+  async function toggleSave() {
+    const user = auth.currentUser;
+    if (!user) {
+      window.alert("Please log in first to save this contact.");
+      return;
+    }
+    
+    const previousState = isSaved;
+    const action = isSaved ? "unsave" : "save";
+    setIsSaved(!isSaved);
+    
+    try {
+      const res = await fetch("/api/saved-contacts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: user.uid,
+          listingcabs_id: driver.id,
+          action,
+        }),
+      });
+      
+      if (!res.ok) {
+        setIsSaved(previousState);
+        const errorText = await res.text().catch(() => "Unknown error");
+        console.error("Failed to sync save status:", res.status, errorText);
+        window.alert(`Failed to save: ${errorText}`);
+      }
+    } catch (e) {
+      setIsSaved(previousState);
+      console.error(e);
+    }
+  }
+
   async function submitReport() {
     setReportResult(null);
     const currentUser = auth.currentUser;
@@ -145,7 +210,7 @@ export default function CabDriverCard({ driver, matchScore }: { driver: CabDrive
         <div className="flex items-center gap-4">
           <button
             type="button"
-            onClick={() => setIsSaved(!isSaved)}
+            onClick={toggleSave}
             className="text-[#FF6B00] hover:text-[#E56000] transition"
             aria-label={isSaved ? "Unsave contact" : "Save contact"}
           >
