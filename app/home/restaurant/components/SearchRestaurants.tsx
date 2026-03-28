@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { trackSearch } from '@/app/lib/personalization/trackSearch';
 
 interface SearchRestaurantsProps {
   onSearch: (term: string) => void;
@@ -12,6 +13,7 @@ export default function SearchRestaurants({ onSearch }: SearchRestaurantsProps) 
 
   const handleSearch = () => {
     onSearch(searchTerm);
+    trackSearch(searchTerm, "restaurants");
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
