@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { auth } from "@/lib/firebase";
+import RateRestaurantModal from "./RateRestaurantModal";
 
 export type RestaurantPlace = {
   id?: string;
@@ -12,6 +13,9 @@ export type RestaurantPlace = {
   contact_number: string | null;
   map_link: string | null;
   Place_category: string | null;
+  actual_rating?: string | null;
+  rating_users?: string[] | null;
+  features?: string[] | null;
 };
 
 export default function RestaurantCard({ place }: { place: RestaurantPlace }) {
@@ -20,6 +24,7 @@ export default function RestaurantCard({ place }: { place: RestaurantPlace }) {
   const mapLink = place.map_link ?? "#";
   const contact = place.contact_number ?? "";
   const placeId = place.id ?? null;
+  const rating = place.actual_rating ?? "-";
 
   const [isReporting, setIsReporting] = useState(false);
   const [isReportOpen, setIsReportOpen] = useState(false);
@@ -29,6 +34,22 @@ export default function RestaurantCard({ place }: { place: RestaurantPlace }) {
     | { type: "error"; message: string }
     | null
   >(null);
+  const [isRateOpen, setIsRateOpen] = useState(false);
+  const [hasRated, setHasRated] = useState(false);
+
+  useEffect(() => {
+    if (auth.currentUser && place.rating_users?.includes(auth.currentUser.uid)) {
+      setHasRated(true);
+    }
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user && place.rating_users?.includes(user.uid)) {
+        setHasRated(true);
+      } else {
+        setHasRated(false);
+      }
+    });
+    return () => unsubscribe();
+  }, [place.rating_users]);
 
   const handleMapClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -107,6 +128,21 @@ export default function RestaurantCard({ place }: { place: RestaurantPlace }) {
             <h2 className="text-[#201B10] font-extrabold text-2xl leading-tight">
               {name}
             </h2>
+            <div className="flex gap-2 items-center mt-1">
+              <div><Image src={"/star.png"} width={16.67} height={15.83} alt='s' /></div>
+              <div className="text-sm text-gray-600">
+                {rating}
+              </div>
+              <div className="text-sm text-gray-600">
+                Ratings
+              </div>
+              <div 
+                className="text-blue-600 text-sm font-bold cursor-pointer"
+                onClick={() => setIsRateOpen(true)}
+              >
+                [{hasRated ? "Edit ratings" : "Rate this place"}]
+              </div>
+            </div>
             <div className="flex items-center text-[#7C7C7C] mt-2 font-medium">
               <span 
                 onClick={handleMapClick}
@@ -149,22 +185,43 @@ export default function RestaurantCard({ place }: { place: RestaurantPlace }) {
           </button>
         </div>
 
-        <div className="flex justify-end items-center mt-4">
-          {contact ? (
-            <a
-              href={`tel:${contact}`}
-              className="bg-[#016A4A] text-white font-semibold flex items-center gap-2 px-6 py-2.5 rounded-xl hover:opacity-95 transition"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-              </svg>
-              Call Now
-            </a>
-          ) : (
-            <div className="bg-gray-200 text-gray-500 font-semibold flex items-center gap-2 px-6 py-2.5 rounded-xl">
-              Call Now
-            </div>
-          )}
+        <div className="flex justify-between items-center mt-4 w-full gap-4">
+          <div className="flex flex-wrap gap-2">
+            {place.features && place.features.length > 0
+              ? place.features.map((feature, idx) => {
+                  const isSpecial = feature.toUpperCase() === "FAST RESPONSE";
+                  return (
+                    <span
+                      key={idx}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-extrabold tracking-wide ${
+                        isSpecial
+                          ? "bg-[#F0FDF4] text-[#016A4A]"
+                          : "bg-[#F4F5F7] text-[#7C7C7C]"
+                      }`}
+                    >
+                      {feature.toUpperCase()}
+                    </span>
+                  );
+                })
+              : null}
+          </div>
+          <div className="flex-shrink-0">
+            {contact ? (
+              <a
+                href={`tel:${contact}`}
+                className="bg-[#016A4A] text-white font-semibold flex items-center gap-2 px-6 py-2.5 rounded-xl hover:opacity-95 transition"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+                Call Now
+              </a>
+            ) : (
+              <div className="bg-gray-200 text-gray-500 font-semibold flex items-center gap-2 px-6 py-2.5 rounded-xl">
+                Call Now
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -240,6 +297,13 @@ export default function RestaurantCard({ place }: { place: RestaurantPlace }) {
             </div>
           </div>
         </div>
+      ) : null}
+
+      {isRateOpen ? (
+        <RateRestaurantModal
+          placeId={placeId || ""}
+          onClose={() => setIsRateOpen(false)}
+        />
       ) : null}
     </div>
   );
