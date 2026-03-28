@@ -1,8 +1,43 @@
 'use client';
 import React, { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
 
 const Chatbot = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [messages, setMessages] = useState<{role: 'user' | 'assistant', content: string}[]>([
+    { role: 'assistant', content: 'Namaste! I am your Turant Sahayak. How can I help you today? I can find water suppliers, book autos, or locate the nearest medical clinic.' }
+  ]);
+  const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSend = async () => {
+    if (!input.trim() || isLoading) return;
+    const userMessage = input.trim();
+    setInput('');
+    const newMessages = [...messages, { role: 'user' as const, content: userMessage }];
+    setMessages(newMessages);
+    setIsLoading(true);
+
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ history: newMessages })
+      });
+      const data = await response.json();
+      if (data.text) {
+        setMessages([...newMessages, { role: 'assistant', content: data.text }]);
+      } else if (data.error) {
+        setMessages([...newMessages, { role: 'assistant', content: `API Error: ${data.error}` }]);
+      } else {
+        setMessages([...newMessages, { role: 'assistant', content: "Sorry, I ran into an error connecting to my brain." }]);
+      }
+    } catch {
+      setMessages([...newMessages, { role: 'assistant', content: "Sorry, I ran into a network error." }]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <>
@@ -68,78 +103,67 @@ const Chatbot = () => {
 
             {/* Chat Messages */}
             <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4 font-[family-name:var(--font-poppins)] text-[15px]">
-              
-              {/* Bot Message 1 */}
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-lg bg-gray-200 flex shrink-0 items-center justify-center mt-auto mb-2 text-gray-500">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="3" y="11" width="18" height="10" rx="2"></rect>
-                    <circle cx="12" cy="5" r="2"></circle>
-                    <path d="M12 7v4"></path>
-                    <line x1="8" y1="16" x2="8" y2="16"></line>
-                    <line x1="16" y1="16" x2="16" y2="16"></line>
-                  </svg>
-                </div>
-                <div className="bg-white p-4 rounded-2xl rounded-bl-sm shadow-sm text-gray-800 leading-relaxed border border-gray-100">
-                  Namaste! I am your Turant Sahayak. How can I help you today? I can find water suppliers, book autos, or locate the nearest medical clinic.
-                </div>
-              </div>
-
-              {/* User Message 1 */}
-              <div className="flex items-end justify-end">
-                <div className="bg-[#FF5A25] p-4 rounded-2xl rounded-br-sm shadow-sm text-white max-w-[85%] leading-relaxed">
-                  Which water suppliers are available near Rampur sector currently?
-                </div>
-              </div>
-
-              {/* Bot Message 2 */}
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-lg bg-gray-200 flex shrink-0 items-center justify-center mt-auto mb-2 text-gray-500">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="3" y="11" width="18" height="10" rx="2"></rect>
-                    <circle cx="12" cy="5" r="2"></circle>
-                    <path d="M12 7v4"></path>
-                    <line x1="8" y1="16" x2="8" y2="16"></line>
-                    <line x1="16" y1="16" x2="16" y2="16"></line>
-                  </svg>
-                </div>
-                <div className="flex flex-col gap-3 w-full">
-                  <div className="bg-white p-4 rounded-2xl rounded-bl-sm shadow-sm text-gray-800 border border-gray-100">
-                      Found 1 supplier near you:
-                  </div>
-                  {/* Result Card UI */}
-                  <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col gap-3">
-                      <div className="flex justify-between items-start">
-                        <div className="font-bold text-[17px] text-gray-900 leading-tight">Sanjeevani Medical</div>
-                        <div className="bg-gray-50 flex items-center gap-1.5 px-2 py-1 rounded-md">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#F59E0B" stroke="#F59E0B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                            <span className="font-bold text-sm">4.8</span>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-[#2ECC71]"></span>
-                        <span className="text-[#2ECC71] text-xs font-bold tracking-wider">OPEN TILL 11 PM</span>
-                      </div>
-                      <button className="w-full bg-[#2ECC71] text-white font-bold py-2.5 rounded-lg mt-1">
-                        SHOW NUMBER
-                      </button>
+              {messages.map((msg, i) => (
+                <div key={i} className={`flex items-end ${msg.role === 'user' ? 'justify-end' : 'justify-start items-start gap-3'}`}>
+                  {msg.role === 'assistant' && (
+                    <div className="w-8 h-8 rounded-lg bg-gray-200 flex shrink-0 items-center justify-center mt-auto mb-2 text-gray-500">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="3" y="11" width="18" height="10" rx="2"></rect>
+                        <circle cx="12" cy="5" r="2"></circle>
+                        <path d="M12 7v4"></path>
+                        <line x1="8" y1="16" x2="8" y2="16"></line>
+                        <line x1="16" y1="16" x2="16" y2="16"></line>
+                      </svg>
+                    </div>
+                  )}
+                  <div className={`${msg.role === 'user' ? 'bg-[#FF5A25] text-white rounded-br-sm' : 'bg-white text-gray-800 rounded-bl-sm border border-gray-100'} p-4 rounded-2xl shadow-sm leading-relaxed max-w-[85%] whitespace-pre-wrap flex flex-col gap-2`}>
+                    <ReactMarkdown
+                      components={{
+                        p: ({node, ...props}) => <p className="m-0" {...props} />,
+                        strong: ({node, ...props}) => <strong className="font-bold" {...props} />,
+                        ul: ({node, ...props}) => <ul className="list-disc ml-4 space-y-1" {...props} />,
+                        ol: ({node, ...props}) => <ol className="list-decimal ml-4 space-y-1" {...props} />,
+                        li: ({node, ...props}) => <li {...props} />
+                      }}
+                    >
+                      {msg.content}
+                    </ReactMarkdown>
                   </div>
                 </div>
-              </div>
-              
+              ))}
+              {isLoading && (
+                 <div className="flex items-start gap-3">
+                   <div className="w-8 h-8 rounded-lg bg-gray-200 flex shrink-0 items-center justify-center mt-auto mb-2 text-gray-500">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="3" y="11" width="18" height="10" rx="2"></rect>
+                        <circle cx="12" cy="5" r="2"></circle>
+                        <path d="M12 7v4"></path>
+                        <line x1="8" y1="16" x2="8" y2="16"></line>
+                        <line x1="16" y1="16" x2="16" y2="16"></line>
+                      </svg>
+                    </div>
+                    <div className="bg-white p-4 rounded-2xl rounded-bl-sm shadow-sm text-gray-800 border border-gray-100">
+                      Thinking...
+                    </div>
+                 </div>
+              )}
             </div>
 
             {/* Bottom Input Area */}
             <div className="bg-white p-4 shrink-0 flex flex-col gap-3 border-t border-gray-100 relative shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.05)]">
-              <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
-                  <button className="whitespace-nowrap bg-[#F3F4F6] hover:bg-gray-200 text-[#374151] font-medium text-sm px-4 py-2 rounded-full transition">Check Subsidy</button>
-                  <button className="whitespace-nowrap bg-[#F3F4F6] hover:bg-gray-200 text-[#374151] font-medium text-sm px-4 py-2 rounded-full transition">Soil Test Result</button>
-                  <button className="whitespace-nowrap bg-[#F3F4F6] hover:bg-gray-200 text-[#374151] font-medium text-sm px-4 py-2 rounded-full transition">Local Mandi Prices</button>
-              </div>
-              
               <div className="relative flex items-center bg-[#F3F4F6] rounded-full p-1 border border-gray-200 focus-within:border-gray-300 focus-within:bg-white transition-colors">
-                  <input type="text" placeholder="Type your question in Hindi or English..." className="w-full bg-transparent outline-none px-4 text-sm text-gray-700 placeholder:text-gray-400" />
-                  <button className="bg-[#FF5A25] hover:bg-[#E64A19] transition shrink-0 w-10 h-10 rounded-full flex items-center justify-center shadow-md">
+                  <input 
+                    type="text" 
+                    placeholder="Type your question in Hindi or English..." 
+                    className="w-full bg-transparent outline-none px-4 text-sm text-gray-700 placeholder:text-gray-400"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={(e) => { if ('key' in e && e.key === 'Enter') handleSend(); }}
+                  />
+                  <button 
+                    onClick={handleSend}
+                    disabled={isLoading || !input.trim()}
+                    className="bg-[#FF5A25] hover:bg-[#E64A19] disabled:opacity-50 transition shrink-0 w-10 h-10 rounded-full flex items-center justify-center shadow-md">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="translate-x-[-1px]">
                       <line x1="22" y1="2" x2="11" y2="13"></line>
                       <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
