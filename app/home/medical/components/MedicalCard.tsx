@@ -4,6 +4,11 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { auth } from "@/lib/firebase";
 import RateMedicalModal from "./RateMedicalModal";
+import {
+  getDisplayMedicalTags,
+  getNormalizedMedicalTags,
+} from "@/app/lib/medicalTags";
+import { incrementMedicalVectorFromTags } from "@/app/lib/userVector";
 
 export type MedicalPlace = {
   id?: string;
@@ -15,6 +20,7 @@ export type MedicalPlace = {
   Place_category: string | null;
   actual_rating?: string | null;
   rating_users?: string[] | null;
+  tags?: string[] | null;
   features?: string[] | null;
 };
 
@@ -53,10 +59,17 @@ export default function MedicalCard({ place }: { place: MedicalPlace }) {
 
   const handleMapClick = (e: React.MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     if (mapLink && mapLink !== "#") {
       window.open(mapLink, "_blank", "noopener,noreferrer");
     }
   };
+
+  const chipLabels = getDisplayMedicalTags(place);
+
+  function handleCardPress() {
+    incrementMedicalVectorFromTags(getNormalizedMedicalTags(place));
+  }
 
   async function submitReport() {
     setReportResult(null);
@@ -111,7 +124,10 @@ export default function MedicalCard({ place }: { place: MedicalPlace }) {
   }
 
   return (
-    <div className="bg-white rounded-[24px] shadow-sm border border-gray-100 flex overflow-hidden min-h-[140px] items-stretch pr-6 mb-4 gap-6">
+    <div
+      onClick={handleCardPress}
+      className="bg-white rounded-[24px] shadow-sm border border-gray-100 flex overflow-hidden min-h-[140px] items-stretch pr-6 mb-4 gap-6 cursor-pointer hover:border-gray-200 transition"
+    >
       {/* Left Image Placeholder */}
       <div className="w-40 sm:w-56 bg-gray-200 relative flex-shrink-0">
         <Image 
@@ -138,7 +154,10 @@ export default function MedicalCard({ place }: { place: MedicalPlace }) {
               </div>
               <div 
                 className="text-blue-600 text-sm font-bold cursor-pointer"
-                onClick={() => setIsRateOpen(true)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsRateOpen(true);
+                }}
               >
                 [{hasRated ? "Edit ratings" : "Rate this pharmacy"}]
               </div>
@@ -161,7 +180,8 @@ export default function MedicalCard({ place }: { place: MedicalPlace }) {
           
           <button
             type="button"
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               setReportResult(null);
               setIsReportOpen(true);
             }}
@@ -187,19 +207,19 @@ export default function MedicalCard({ place }: { place: MedicalPlace }) {
 
         <div className="flex justify-between items-center mt-4 w-full gap-4">
           <div className="flex flex-wrap gap-2">
-            {place.features && place.features.length > 0
-              ? place.features.map((feature, idx) => {
-                  const isSpecial = feature.toUpperCase() === "FAST RESPONSE";
+            {chipLabels.length > 0
+              ? chipLabels.map((label, idx) => {
+                  const isSpecial = label.toUpperCase() === "FAST RESPONSE";
                   return (
                     <span
-                      key={idx}
+                      key={`${label}-${idx}`}
                       className={`px-3 py-1.5 rounded-xl text-xs font-extrabold tracking-wide ${
                         isSpecial
                           ? "bg-[#F0FDF4] text-[#016A4A]"
                           : "bg-[#F4F5F7] text-[#7C7C7C]"
                       }`}
                     >
-                      {feature.toUpperCase()}
+                      {label}
                     </span>
                   );
                 })
@@ -209,6 +229,7 @@ export default function MedicalCard({ place }: { place: MedicalPlace }) {
             {contact ? (
               <a
                 href={`tel:${contact}`}
+                onClick={(e) => e.stopPropagation()}
                 className="bg-[#016A4A] text-white font-semibold flex items-center gap-2 px-6 py-2.5 rounded-xl hover:opacity-95 transition"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

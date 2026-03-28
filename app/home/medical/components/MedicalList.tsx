@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/app/lib/supabaseClient";
 import MedicalCard, { MedicalPlace } from "./MedicalCard";
+import { rankMedicalPlacesBySearch } from "@/app/lib/medicalTags";
 
 export default function MedicalList({
   activeCategory,
@@ -74,17 +75,10 @@ export default function MedicalList({
       );
     }
 
-    if (!searchTerm?.trim()) return categoryFiltered;
-    const lowerTerm = searchTerm.toLowerCase();
+    const query = searchTerm?.trim();
+    if (!query) return categoryFiltered;
 
-    return categoryFiltered.filter((place) => {
-      return Object.values(place).some((val) => {
-        if (val && typeof val !== "object") {
-          return String(val).toLowerCase().includes(lowerTerm);
-        }
-        return false;
-      });
-    });
+    return rankMedicalPlacesBySearch(categoryFiltered, query);
   }, [places, activeCategory, searchTerm]);
 
   return (

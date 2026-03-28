@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { trackSearch } from '@/app/lib/personalization';
 
 interface SearchCabsProps {
   onSearch: (term: string) => void;
@@ -10,11 +11,13 @@ interface SearchCabsProps {
 export default function SearchCabs({ onSearch }: SearchCabsProps) {
   const [searchTerm, setSearchTerm] = useState("");
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     onSearch(searchTerm);
     if (typeof window !== 'undefined') {
       localStorage.setItem('turant_last_search', searchTerm);
     }
+    // Track whitelist-only search terms for the personalization engine (NLP filters names/places).
+    await trackSearch(searchTerm, 'cabs');
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

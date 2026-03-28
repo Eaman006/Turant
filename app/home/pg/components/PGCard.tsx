@@ -15,6 +15,8 @@ export type PGPlace = {
   Place_category: string | null;
   actual_rating: string | null;
   rating_users?: string[] | null;
+  /** Amenity labels; may mirror `features` depending on DB shape */
+  tags?: string[] | null;
   features?: string[] | null;
 };
 

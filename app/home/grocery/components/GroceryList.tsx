@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/app/lib/supabaseClient";
 import GroceryCard, { GroceryPlace } from "./GroceryCard";
+import { rankGroceryPlacesBySearch } from "@/app/lib/groceryTags";
 
 export default function GroceryList({
   activeCategory,
@@ -74,17 +75,10 @@ export default function GroceryList({
       );
     }
 
-    if (!searchTerm?.trim()) return categoryFiltered;
-    const lowerTerm = searchTerm.toLowerCase();
+    const query = searchTerm?.trim();
+    if (!query) return categoryFiltered;
 
-    return categoryFiltered.filter((place) => {
-      return Object.values(place).some((val) => {
-        if (val && typeof val !== "object") {
-          return String(val).toLowerCase().includes(lowerTerm);
-        }
-        return false;
-      });
-    });
+    return rankGroceryPlacesBySearch(categoryFiltered, query);
   }, [places, activeCategory, searchTerm]);
 
   return (

@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/app/lib/supabaseClient";
 import RestaurantCard, { RestaurantPlace } from "./RestaurantCard";
-import Fuse from "fuse.js";
+import { rankRestaurantsBySearch } from "@/app/lib/restaurantTags";
 
 export default function RestaurantList({
   activeCategory,
@@ -79,12 +79,7 @@ export default function RestaurantList({
     const query = searchTerm?.trim();
     if (!query) return categoryFiltered;
 
-    const fuse = new Fuse(categoryFiltered, {
-      threshold: 0.3,
-      keys: ["name", "category", "Place_category", "address"],
-    });
-
-    return fuse.search(query).map((result) => result.item);
+    return rankRestaurantsBySearch(categoryFiltered, query);
   }, [places, activeCategory, searchTerm]);
 
   return (

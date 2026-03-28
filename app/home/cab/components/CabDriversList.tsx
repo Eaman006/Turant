@@ -5,6 +5,11 @@ import { supabase } from "@/app/lib/supabaseClient";
 import CabDriverCard, { CabDriver } from "./CabDriverCard";
 import { diceCoefficient } from "@/app/lib/similarity";
 import Fuse from "fuse.js";
+import {
+  extractCabWhitelistTags,
+  getPersonalizedList,
+  PROFILE_UPDATED_EVENT,
+} from "@/app/lib/personalization";
 
 type DriverWithScore = CabDriver & { matchScore: number };
 
@@ -19,12 +24,21 @@ export default function CabDriversList({
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [lastSearchQuery, setLastSearchQuery] = useState<string>("");
+  /** Bumps when the category profile vector changes so re-ranking runs again. */
+  const [profileTick, setProfileTick] = useState(0);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem("turant_last_search") || "";
       setLastSearchQuery(stored.trim());
     }
+  }, []);
+
+  useEffect(() => {
+    const onProfile = () => setProfileTick((t) => t + 1);
+    if (typeof window === "undefined") return;
+    window.addEventListener(PROFILE_UPDATED_EVENT, onProfile);
+    return () => window.removeEventListener(PROFILE_UPDATED_EVENT, onProfile);
   }, []);
 
   const filterVehicleType = useMemo(() => {
@@ -93,6 +107,17 @@ export default function CabDriversList({
     return fuse.search(query).map((result) => result.item);
   }, [drivers, searchTerm]);
 
+  /** Re-order by user profile scores (whitelist tags on vehicle / type / description). */
+  const personalizedDrivers = useMemo(
+    () =>
+      getPersonalizedList(
+        filteredDrivers,
+        "cabs",
+        extractCabWhitelistTags
+      ),
+    [filteredDrivers, profileTick]
+  );
+
   const recommendedDrivers = useMemo<DriverWithScore[]>(() => {
     const query = lastSearchQuery?.trim();
     if (!query) return [];
@@ -118,11 +143,11 @@ export default function CabDriversList({
   const recommendedIds = useMemo(() => new Set(recommendedDrivers.map((d) => d.id ?? `${d.driver_name ?? ''}-${d.phone_number ?? ''}`)), [recommendedDrivers]);
 
   const allDrivers = useMemo(() => {
-    return filteredDrivers.filter((driver) => {
+    return personalizedDrivers.filter((driver) => {
       const id = driver.id ?? `${driver.driver_name ?? ''}-${driver.phone_number ?? ''}`;
       return !recommendedIds.has(id);
     });
-  }, [filteredDrivers, recommendedIds]);
+  }, [personalizedDrivers, recommendedIds]);
 
   return (
     <div className="px-2 pb-10">
@@ -138,7 +163,7 @@ export default function CabDriversList({
         </div>
       )}
 
-      {!loading && !errorMsg && filteredDrivers.length === 0 && (
+      {!loading && !errorMsg && personalizedDrivers.length === 0 && (
         <div className="text-center py-6 text-gray-600 font-semibold">
           No drivers found.
         </div>

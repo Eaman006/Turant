@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/app/lib/supabaseClient";
 import PGCard, { PGPlace } from "./PGCard";
-import Fuse from "fuse.js";
+import { rankPgPlacesBySearch } from "@/app/lib/pgAmenities";
 
 export default function PGList({
   activeCategory,
@@ -68,12 +68,7 @@ export default function PGList({
     const query = searchTerm?.trim();
     if (!query) return categoryFiltered;
 
-    const fuse = new Fuse(categoryFiltered, {
-      threshold: 0.3,
-      keys: ["name", "category", "Place_category", "address"],
-    });
-
-    return fuse.search(query).map((result) => result.item);
+    return rankPgPlacesBySearch(categoryFiltered, query);
   }, [places, activeCategory, searchTerm]);
 
   return (
