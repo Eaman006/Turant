@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { auth } from "@/lib/firebase";
 import RateMedicalModal from "./RateMedicalModal";
+import { useSavedContacts } from "@/app/home/SavedContactsProvider";
 
 export type MedicalPlace = {
   id?: string;
@@ -51,74 +52,12 @@ export default function MedicalCard({ place }: { place: MedicalPlace }) {
     return () => unsubscribe();
   }, [place.rating_users]);
 
-  const [isSaved, setIsSaved] = useState(false);
+  const { savedPlaces, toggleSave: toggleGlobalSave } = useSavedContacts();
+  const isSaved = placeId ? savedPlaces.has(String(placeId)) : false;
 
-  useEffect(() => {
-    let active = true;
-    const fetchSavedStatus = async (userUid: string) => {
-      try {
-        const res = await fetch(`/api/saved-contacts?user_id=${userUid}`);
-        if (res.ok && active) {
-          const data = await res.json();
-          const isSavedDb = data.some((item: any) => item.listing_id == placeId);
-          setIsSaved(isSavedDb);
-        }
-      } catch (e) {
-        console.error("Failed to fetch saved status", e);
-      }
-    };
-    
-    if (auth.currentUser) {
-      fetchSavedStatus(auth.currentUser.uid);
-    }
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        fetchSavedStatus(user.uid);
-      } else if (active) {
-        setIsSaved(false);
-      }
-    });
-    return () => {
-      active = false;
-      unsubscribe();
-    };
-  }, [placeId]);
-
-  async function toggleSave() {
-    const user = auth.currentUser;
-    if (!user) {
-      window.alert("Please log in first to save this contact.");
-      return;
-    }
-    
-    if (!placeId) return;
-
-    const previousState = isSaved;
-    const action = isSaved ? "unsave" : "save";
-    setIsSaved(!isSaved);
-    
-    try {
-      const res = await fetch("/api/saved-contacts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          user_id: user.uid,
-          listing_id: placeId,
-          action,
-        }),
-      });
-      
-      if (!res.ok) {
-        setIsSaved(previousState);
-        const errorText = await res.text().catch(() => "Unknown error");
-        console.error("Failed to sync save status:", res.status, errorText);
-        window.alert(`Failed to save: ${errorText}`);
-      }
-    } catch (e) {
-      setIsSaved(previousState);
-      console.error(e);
-    }
-  }
+  const toggleSave = async () => {
+    if (placeId) await toggleGlobalSave("place", placeId);
+  };
 
   const handleMapClick = (e: React.MouseEvent) => {
     e.preventDefault();
