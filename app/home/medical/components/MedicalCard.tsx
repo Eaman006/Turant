@@ -51,6 +51,75 @@ export default function MedicalCard({ place }: { place: MedicalPlace }) {
     return () => unsubscribe();
   }, [place.rating_users]);
 
+  const [isSaved, setIsSaved] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    const fetchSavedStatus = async (userUid: string) => {
+      try {
+        const res = await fetch(`/api/saved-contacts?user_id=${userUid}`);
+        if (res.ok && active) {
+          const data = await res.json();
+          const isSavedDb = data.some((item: any) => item.listing_id == placeId);
+          setIsSaved(isSavedDb);
+        }
+      } catch (e) {
+        console.error("Failed to fetch saved status", e);
+      }
+    };
+    
+    if (auth.currentUser) {
+      fetchSavedStatus(auth.currentUser.uid);
+    }
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        fetchSavedStatus(user.uid);
+      } else if (active) {
+        setIsSaved(false);
+      }
+    });
+    return () => {
+      active = false;
+      unsubscribe();
+    };
+  }, [placeId]);
+
+  async function toggleSave() {
+    const user = auth.currentUser;
+    if (!user) {
+      window.alert("Please log in first to save this contact.");
+      return;
+    }
+    
+    if (!placeId) return;
+
+    const previousState = isSaved;
+    const action = isSaved ? "unsave" : "save";
+    setIsSaved(!isSaved);
+    
+    try {
+      const res = await fetch("/api/saved-contacts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: user.uid,
+          listing_id: placeId,
+          action,
+        }),
+      });
+      
+      if (!res.ok) {
+        setIsSaved(previousState);
+        const errorText = await res.text().catch(() => "Unknown error");
+        console.error("Failed to sync save status:", res.status, errorText);
+        window.alert(`Failed to save: ${errorText}`);
+      }
+    } catch (e) {
+      setIsSaved(previousState);
+      console.error(e);
+    }
+  }
+
   const handleMapClick = (e: React.MouseEvent) => {
     e.preventDefault();
     if (mapLink && mapLink !== "#") {
@@ -159,15 +228,32 @@ export default function MedicalCard({ place }: { place: MedicalPlace }) {
             </div>
           </div>
           
-          <button
-            type="button"
-            onClick={() => {
-              setReportResult(null);
-              setIsReportOpen(true);
-            }}
-            disabled={isReporting}
-            className="text-xs font-semibold tracking-wide text-gray-500 hover:text-gray-700 transition disabled:opacity-60 disabled:cursor-not-allowed inline-flex items-center gap-1"
-          >
+          <div className="flex items-center gap-4">
+            <button
+              type="button"
+              onClick={toggleSave}
+              className="text-[#FF6B00] hover:text-[#E56000] transition"
+              aria-label={isSaved ? "Unsave contact" : "Save contact"}
+            >
+              {isSaved ? (
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                  <path fillRule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clipRule="evenodd" />
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+                </svg>
+              )}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setReportResult(null);
+                setIsReportOpen(true);
+              }}
+              disabled={isReporting}
+              className="text-xs font-semibold tracking-wide text-gray-500 hover:text-gray-700 transition disabled:opacity-60 disabled:cursor-not-allowed inline-flex items-center gap-1"
+            >
             <svg
               aria-hidden="true"
               viewBox="0 0 24 24"
@@ -181,8 +267,9 @@ export default function MedicalCard({ place }: { place: MedicalPlace }) {
               <path d="M4 22V4" />
               <path d="M4 4h12l-1.5 3L16 10H4" />
             </svg>
-            {isReporting ? "REPORTING..." : "REPORT"}
-          </button>
+              {isReporting ? "REPORTING..." : "REPORT"}
+            </button>
+          </div>
         </div>
 
         <div className="flex justify-between items-center mt-4 w-full gap-4">
