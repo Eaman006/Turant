@@ -1,6 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import HomeRecommendations from './components/HomeRecommendations'
 
 const page = () => {
   return (
@@ -96,6 +97,8 @@ const page = () => {
             </div>
             </Link>
           </div>
+          
+          <HomeRecommendations />
         </div>
 
       </div>
