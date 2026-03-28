@@ -114,7 +114,7 @@ export default function SupportTicketForm() {
           onChange={(e) => setTicketMessage(e.target.value)}
         ></textarea>
         <div className='m-2 p-2 flex justify-between items-center mt-auto'>
-          <div className='m-2 p-2 text-gray-600'>Estimated response time: 2-4 hours</div>
+          <div className='m-2 p-2 text-gray-600'>Estimated response time: 2-4 hours and response will be via your registered mail</div>
           <button 
             onClick={handleSubmit}
             disabled={loading}
