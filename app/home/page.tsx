@@ -8,11 +8,7 @@ const page = () => {
     <div className='font-[family-name:var(--font-poppins)]'>
       <div className=''>
         <div>
-          <div className='shadow-gray-300 shadow-md flex rounded-xl p-4 gap-5 border-gray-300 border-2'>
-            <Image src={"/sh.png"} height={20} width={20} alt='s'></Image>
-            <input className='w-full h-5 outline-none' type="text" placeholder='search for fruit or cabs' />
-
-          </div>
+          
           <div className='bg-gradient-to-r from-[#E67E22]/50 to-[#F39C12]/50 mt-10 flex justify-between items-center rounded-2xl'>
             <div className='font-extrabold text-4xl sm:text-4xl text-white p-6 mx-10 flex flex-col'>
               <span className='block leading-[1.05]'>No Middlemen.No Commissions.</span>

@@ -59,10 +59,7 @@ const page = () => {
         <LocationHeader locationName={address} />
         </div>
         <SearchMedical onSearch={setSearchTerm} />
-        <div className='flex justify-between gap-5'>
-          <div className='m-2 p-2'><Image src="/bell.png" height={20} width={16} alt='b'></Image></div>
-          <div className='m-2 p-2'><Image src="/set.png" width={20.1} height={20} alt='set'></Image></div>
-        </div>
+        
         </div>
         <div className='text-sm my-5 font-semibold'>
           HOME &gt; <span className='text-[#0049DB]'>Medical & Pharmacies</span>
