@@ -86,17 +86,7 @@ const AdminSidebar = () => {
           </div>
         </Link>
 
-        <Link href={"/admin/listings"}>
-          <div className={`flex gap-4 items-center cursor-pointer px-4 py-3 rounded-xl w-full transition-colors ${getActiveClass("/admin/listings")}`}>
-            <div className='min-w-[24px] flex justify-center'>
-              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={getIconColor("/admin/listings")} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="8" x2="21" y1="6" y2="6"/><line x1="8" x2="21" y1="12" y2="12"/><line x1="8" x2="21" y1="18" y2="18"/><line x1="3" x2="3.01" y1="6" y2="6"/><line x1="3" x2="3.01" y1="12" y2="12"/><line x1="3" x2="3.01" y1="18" y2="18"/></svg>
-            </div>
-            {isOpen && (
-              <div className="text-[15px] font-medium whitespace-nowrap">Manage Listings</div>
-            )}
-          </div>
-        </Link>
-        
+
         <Link href={"/admin/reports"}>
           <div className={`flex gap-4 items-center cursor-pointer px-4 py-3 rounded-xl w-full transition-colors ${getActiveClass("/admin/reports")}`}>
             <div className='min-w-[24px] flex justify-center'>
