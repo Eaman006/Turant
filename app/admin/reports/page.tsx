@@ -137,17 +137,23 @@ export default function ReportsDashboard() {
     if (!activeReport) return;
     
     try {
-      const table = activeReport.type === 'cab' ? 'reports_cabs' : 'reports_places';
-      const { error } = await supabase
-        .from(table)
-        .update({ report_status: 'resolved' })
-        .eq('id', activeReport.db_id);
+      const response = await fetch('/api/admin/reports-action', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: activeReport.db_id,
+          type: activeReport.type,
+          status: 'closed'
+        })
+      });
 
-      if (error) throw error;
+      if (!response.ok) {
+        throw new Error('Failed to resolve report via API');
+      }
 
       // Optimistic update
       setReports(prev => prev.map(r => 
-        r.id === activeReport.id ? { ...r, status: 'resolved' } : r
+        r.id === activeReport.id ? { ...r, status: 'closed' } : r
       ));
     } catch (error) {
       console.error('Error resolving report:', error);
@@ -156,7 +162,7 @@ export default function ReportsDashboard() {
   };
 
   const activeReport = reports.find(r => r.id === selectedId) || null;
-  const unresolvedReports = reports.filter(r => r.status.toLowerCase() !== 'resolved');
+  const unresolvedReports = reports.filter(r => r.status.toLowerCase() !== 'closed');
 
   return (
     <div className="font-[family-name:var(--font-poppins)] h-[calc(100vh-4rem)] flex gap-8">
@@ -178,7 +184,7 @@ export default function ReportsDashboard() {
             <div className="px-6 py-5 text-gray-500 font-medium">No reports found.</div>
           ) : reports.map((report) => {
             const isSelected = report.id === selectedId;
-            const isResolved = report.status.toLowerCase() === 'resolved';
+            const isResolved = report.status.toLowerCase() === 'closed';
 
             return (
               <div 
@@ -208,7 +214,7 @@ export default function ReportsDashboard() {
                       report.severity.includes("MEDIUM") ? "bg-[#FEF3C7] text-[#D97706]" : 
                       "bg-[#F3F4F6] text-[#4B5563]"}
                   `}>
-                    {isResolved ? "RESOLVED" : report.severity}
+                    {isResolved ? "CLOSED" : report.severity}
                   </span>
                 </div>
 
@@ -254,9 +260,9 @@ export default function ReportsDashboard() {
                     URGENT ACTION REQUIRED
                   </span>
                 )}
-                {activeReport.status.toLowerCase() === 'resolved' && (
+                {activeReport.status.toLowerCase() === 'closed' && (
                   <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold tracking-wide">
-                    RESOLVED
+                    CLOSED
                   </span>
                 )}
               </div>
@@ -349,26 +355,16 @@ export default function ReportsDashboard() {
               )}
 
               <div className="flex gap-4">
-                {/* Issue Warning (Brown button) */}
-                <button className="bg-[#715A50] hover:bg-[#5C483F] transition-colors text-white px-6 py-3 rounded-xl flex items-center gap-2 font-bold shadow-md">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
-                  Issue<br/>Warning
-                </button>
 
-                {/* Suspend Vendor (Red button) */}
-                <button className="bg-[#C81E1E] hover:bg-[#A91919] transition-colors text-white px-6 py-3 rounded-xl flex items-center gap-2 font-bold shadow-md">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
-                  Suspend<br/>Vendor
-                </button>
 
-                {/* Mark as Resolved (Green button) */}
-                {activeReport.status.toLowerCase() !== 'resolved' ? (
+                {/* Mark as Closed (Green button) */}
+                {activeReport.status.toLowerCase() !== 'closed' ? (
                   <button 
                     onClick={handleResolve}
                     className="bg-[#057A55] hover:bg-[#046345] transition-colors text-white px-6 py-3 rounded-xl flex items-center gap-2 font-bold shadow-md"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                    Mark as<br/>Resolved
+                    Mark as<br/>Closed
                   </button>
                 ) : (
                   <button 
@@ -376,7 +372,7 @@ export default function ReportsDashboard() {
                     className="bg-gray-300 text-gray-500 transition-colors px-6 py-3 rounded-xl flex items-center gap-2 font-bold shadow-sm cursor-not-allowed"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
-                    Resolved
+                    Closed
                   </button>
                 )}
               </div>
