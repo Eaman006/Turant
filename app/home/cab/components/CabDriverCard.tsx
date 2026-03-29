@@ -88,6 +88,7 @@ export default function CabDriverCard({ driver, matchScore }: { driver: CabDrive
           reason: reportReason,
           reporter_id: reporterId,
           reporter_name: reporterName,
+          gmail: currentUser.email || "",
         }),
       });
 

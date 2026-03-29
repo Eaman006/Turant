@@ -29,6 +29,8 @@ export async function POST(req: Request) {
       typeof body?.reporter_id === "string" ? body.reporter_id.trim() : "";
     const reporterName =
       typeof body?.reporter_name === "string" ? body.reporter_name.trim() : "";
+    const gmail =
+      typeof body?.gmail === "string" ? body.gmail.trim() : "";
 
     if (!cabId) return new NextResponse("Missing cab_id", { status: 400 });
 
@@ -45,6 +47,7 @@ export async function POST(req: Request) {
       reason,
       reporter_id: reporterId,
       reporter_name: reporterName,
+      gmail,
       report_status: "open",
     });
 
@@ -85,6 +88,7 @@ export async function POST(req: Request) {
         reason: updatedReason,
         reporter_id: reporterId || null,
         reporter_name: reporterName || null,
+        gmail: gmail || null,
         report_status: "open",
       })
       .eq("id", existing.id);

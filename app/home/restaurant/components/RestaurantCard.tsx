@@ -110,6 +110,7 @@ export default function RestaurantCard({ place }: { place: RestaurantPlace }) {
           reason: reportReason,
           reporter_id: reporterId,
           reporter_name: reporterName,
+          gmail: currentUser.email || "",
         }),
       });
 

@@ -99,6 +99,7 @@ export default function PGCard({ place }: { place: PGPlace }) {
           reason: reportReason,
           reporter_id: reporterId,
           reporter_name: reporterName,
+          gmail: currentUser.email || "",
         }),
       });
 

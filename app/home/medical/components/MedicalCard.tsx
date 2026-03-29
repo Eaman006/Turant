@@ -110,6 +110,7 @@ export default function MedicalCard({ place }: { place: MedicalPlace }) {
           reason: reportReason,
           reporter_id: reporterId,
           reporter_name: reporterName,
+          gmail: currentUser.email || "",
         }),
       });
 

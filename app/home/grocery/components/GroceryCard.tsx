@@ -110,6 +110,7 @@ export default function GroceryCard({ place }: { place: GroceryPlace }) {
           reason: reportReason,
           reporter_id: reporterId,
           reporter_name: reporterName,
+          gmail: currentUser.email || "",
         }),
       });
 
