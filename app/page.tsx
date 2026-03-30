@@ -107,10 +107,7 @@ export default function Home() {
           <div className="text-[#5D4037] font-[family-name:var(--font-noto-sans)] text-3xl w-2/3 m-4 p-2 font-thin" >
           Turant is a simple, community-first directory where every listing is manually verified by our team. We walk the streets, check the shops, and update the data regularly so you don’t have to guess.
         </div>
-        <button className="bg-[#3E2723] text-[#FFF3E0] m-6 w-2/9  py-3 font-bold text-4xl rounded-full font-[family-name:var(--font-poppins)] cursor-pointer">
-          Get in Touch
-
-        </button>
+        
       </div>
 
 
