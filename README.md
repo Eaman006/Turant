@@ -1,7 +1,7 @@
 # 🚀 Turant
 **Khana, Gaadi, ya PG? Bas Turant Karo.**
 
-![Turant Banner](https://turant.vercel.app/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fbuilswb4k%2Fpublic%2Fcar.gif%3FupdatedAt%3D1763987936501&w=1200&q=75) ## 📖 Our Mission: We Walked the Streets so You Don't Have To
+📖 Our Mission: We Walked the Streets so You Don't Have To
 Finding accurate details for local services—from the nearest fruit seller to a reliable medical store—can be frustrating. Online maps often miss smaller shops, and phone numbers rarely work. 
 
 **Turant** changes that. We are a simple, community-first local directory combined with a powerful AI-driven recommendation engine. Every listing is manually verified by our team. We walk the streets, check the shops, and update the data regularly so our users never have to guess.
@@ -61,7 +61,8 @@ npm install
 Set up environment variables:
 Create a .env.local file in the root directory and add your Supabase credentials:
 
-3.Code snippet
+3.Code snippet- 
+
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 
